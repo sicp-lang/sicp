@@ -1,12 +1,10 @@
 #lang scribble/doc
 
-@(require scribble/manual
-          scribble/eval
-          (for-label scheme 
-                     (planet "sicp.ss" ("soegaard" "sicp.plt" 2 1))))
+@(require scribble/manual scribble/eval
+          (for-label scheme sicp-pict))
 
 @title{The SICP Picture Language}
-@defmodule[(planet "sicp.ss" ("soegaard" "sicp.plt" 2 1))]
+@defmodule[sicp-pict]
 @index["SICP"]{}
 @index["sicp"]{}
 @index["painter"]{}
@@ -18,6 +16,11 @@ This package provides support for the picture language used in SICP.
 The non-standard primitives @scheme[cons-stream] and @scheme[amb] are
 also provided.
 
+@section{Installation}
+Open in Package Manager in DrRacket: "File | Package Manager...".
+In the tab "Do What I Mean" find the text field and enter:  @scheme[sicp]
+
+Then click the Install button. 
 
 @section{Introduction}
 
@@ -49,7 +52,7 @@ Painters can be combined to construct new painters.
 @section{Example}
 
 @schemeblock[
-> (require (planet "sicp.ss" ("soegaard" "sicp.plt" 2 1)))
+> (require sicp-pict)
 > (paint (number->painter 0))
 > (paint diagonal-shading)
 > (paint-hires  (below (beside diagonal-shading 
@@ -263,6 +266,8 @@ Daniel Coore: Original MIT Scheme code.
 Mike Sperber: PLT port.
 
 Jens Axel Søgaard: Documentation.
+
+Javier Olaechea: Fixed amb.
 
 @section{Other}
 
