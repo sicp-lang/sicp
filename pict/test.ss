@@ -1,5 +1,5 @@
 #lang scheme
-(require (planet "sicp.ss" ("soegaard" "sicp.plt" 2 0)))
+(require "sicp.ss")
 
 ; TEST BITMAP PAINTERS
 (paint einstein)
