@@ -28,9 +28,10 @@ included by Hal Abelson in "Structure and Interpretation of Computer
 Programs".  
 
 Before using this package, read 
-@link["http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4" "section 2.2.4 of SICP"],
+@link["http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4" 
+      "section 2.2.4 of SICP"],
 which is an excellent introduction to the ideas of the picture language.
-This manual meant as a reference guide.
+This manual is meant as a reference guide.
 
 Peter Henderson has written an updated version of 
 @link["http://eprints.ecs.soton.ac.uk/7577/01/funcgeo2.pdf" "\"Functional Geometry\""],
