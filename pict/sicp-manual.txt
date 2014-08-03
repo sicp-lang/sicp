@@ -1,0 +1,374 @@
+
+The SICP Picture Language
+
+ (require (planet "sicp.ss" ("soegaard" "sicp.plt" 2 1)))
+
+
+
+
+
+
+
+
+This package provides support for the picture language used in SICP.
+The non-standard primitives cons-stream and amb are
+also provided.
+
+1. Introduction
+
+The SICP Picture Language is a small language for drawing pictures.
+It shows the power of data abstraction and closure. The picture language
+stems from Peter Henderson’s 1982 paper "Functional Geometry" and was
+included by Hal Abelson in "Structure and Interpretation of Computer
+Programs".
+
+Before using this package, read
+section 2.2.4 of SICP,
+which is an excellent introduction to the ideas of the picture language.
+This manual meant as a reference guide.
+
+Peter Henderson has written an updated version of
+"Functional Geometry",
+which explains how to construct the Escher fish image.
+
+Note: The primitives cons-stream and amb needed
+in other chapters of SICP are also provided.
+
+2. Reference
+
+The basic concept of the picture language is a painter. A painter draws
+it’s image (shifted and scaled) within a frame given by a parallelogram.
+Painters can be combined to construct new painters.
+
+3. Example
+
+  > (require (planet "sicp.ss" ("soegaard" "sicp.plt" 2 1)))
+  > (paint (number->painter 0))
+  > (paint diagonal-shading)
+  > (paint-hires  (below (beside diagonal-shading
+                          (rotate90 diagonal-shading))
+                  (beside (rotate270 diagonal-shading)
+                          (rotate180 diagonal-shading))))
+  > (paint einstein)
+
+4. Vectors
+
+A mathematical vector is called a vect here, in order
+to avoid confusion with the builtin vectors of Scheme.
+
+(make-vect x y) -> vect?
+  x : number?
+  y : number?
+
+Constructs a vect with the given coordinates.
+
+(vector-xcor v) -> number?
+  v : vect?
+
+Returns the x-coordinate.
+
+(vector-ycor v) -> number?
+  v : vect?
+
+Returns the y-coordinate.
+
+(vector-add v w) -> vect?
+  v : vect?
+  w : vect?
+
+Adds the two vects by adding their coordinates pairwise.
+
+(vector-sub v w) -> vect?
+  v : vect?
+  w : vect?
+
+Subtracts the two vects by subtracting their coordinates pairwise.
+
+(vector-scale s v) -> vect?
+  s : number?
+  v : vect?
+
+Scales the vect by multiplying each coordinate of "v" with
+the number "s".
+
+5. Frames
+
+A frame is descibed by three vectors.
+
+    ^
+    | frame edge2 vector
+    |
+   _|__________>
+   /|         frame edge1 vector
+  /
+ /
+/ frame origin pointer
+
+(make-frame origin edge1 edge2) -> frame?
+  origin : vect?
+  edge1 : vect?
+  edge2 : vect
+
+Constructs a frame from a frame origin vector and two frame edge vectors.
+
+(frame-origin f) -> vect?
+  f : frame?
+
+(frame-edge1 f) -> vect?
+  f : frame?
+
+(frame-edge2 f) -> vect?
+  f : frame?
+
+Extracts the origin, first edge or second edge from a frame.
+
+(make-relative-frame origin corner1 corner2) -> (frame? -> frame?)
+  origin : vect?
+  corner1 : vect?
+  corner2 : vect?
+
+The function make-relative-frame provides a convenient way to
+transform frames.  Given a frame and three points : origin,
+corner1, and corner2 (expressed in frame coordinates),
+it returns a new frame with those corners.
+
+(frame-coord-map f) -> (vect? -> vect?)
+  f : frame?
+
+Each frame determines a system of "frame coordinates" (x,y) where
+(0,0) is the origin of the frame, x represents the displacement
+along the first edge (as a fraction of the length of the edge) and
+y is the displacement along the second edge.
+
+The frame coordinate map is returned by frame-coord-map. E.g.
+these expression return the same value:
+
+((frame-coord-map a-frame) (make-vect 0 0))
+
+(frame-origin a-frame)
+
+6. Segments
+
+A pair of vectors determines a directed line segment - the segment
+running from the endpoint of the first vector to the endpoint of the
+second vector.
+
+(make-segment from to) -> segment?
+  from : vect?
+  to : vect?
+
+(segment-start s) -> vect?
+  s : segment?
+
+(segment-end s) -> vect?
+  s : segment?
+
+7. Primitive Painters
+
+Painters take a frame and draw an image, transformed to fit inside the frame.
+
+There are four ways to create painters:
+
+* from a constant: number->painter
+
+* from a list of line segments:  segment->painter
+
+* form a procedure:              procedure->painter
+
+* from a picture:                picture->painter
+
+(number->painter color) -> painter?
+  color : 0..255
+
+Constructs a painter that fills the frame with a gray color indicated
+by the number. 0 is black and 255 is white.
+
+(segments->painter los) -> painter?
+  los : list-of-segment?
+
+Constructs a painter that draws a stick figure given by the
+segments (wrt the unit square).
+
+(procedure->painter p) -> painter?
+  p : procedure?
+
+Creates painters from procedures.  We assume that the procedure
+f is defined on the unit square.
+
+Then to plot a point p in the target frame, we find the inverse image
+T^-1(p) of p under the transformation that maps the unit square to the
+target, and find the value of f at T-1(p).
+
+(picture->painter p) -> painter?
+  p : picture
+
+The picture p is defined on some frame.
+
+Given a point p in the target frame, we compute T^-1(p) where T
+is the transformation that takes the picture frame to the
+target frame, and find the picture value at the closest
+integer point.
+
+(load-painter filename) -> painter?
+  filename : path?
+
+Uses the image file given by filename to create a painter.
+
+8. Higher Order Painters
+
+(transform-painter origin corner1 corner2)
+ -> (painter? -> painter?)
+  origin : vect?
+  corner1 : vect?
+  corner2 : vect?
+
+A painter can be transformed to produce a new painter which, when
+given a frame, calls the original painter on the transformed frame.
+
+Transform-painter will given an origin and two corners, return
+a function that takes a painter as argument and returns
+a transformed painter.
+
+(flip-horiz p) -> painter?
+  p : painter
+
+Returns a painter that flips the image horizontally.
+
+(flip-vert p) -> painter?
+  p : painter
+
+Returns a painter that flips the image vertically.
+
+(rotate90 p) -> painter?
+  p : painter
+
+(rotate180 p) -> painter?
+  p : painter
+
+(rotate270 p) -> painter?
+  p : painter
+
+Returns a painter that rotates the image.
+
+(beside p1 p2) -> painter?
+  p1 : painter
+  p2 : painter
+
+Constructs a painter that paints the images side-by-side.
+
+(below p1 p2) -> painter?
+  p1 : painter
+  p2 : painter
+
+Constructs a painter that paints the second image
+below the first.
+
+(superpose p1 p2) -> painter?
+  p1 : painter
+  p2 : painter
+
+Constructs a painter that paints the two images
+on top of each other.
+
+9. Simple Builtin Painters
+
+The following painter values are buitin:
+
+black, white and gray
+     Fills the frame with black (0), white (255) or gray (150).
+
+diagonal-shading
+    Fills the frame with a shades of gray. The color transition
+    goes from black in the upper left corner is black, to gray
+    in the bottom right corner.
+
+einstein
+    Draws an image of Einstein.
+
+10. Painting
+
+The procedures paint and paint-hi-res takes a painter as input
+and return a snip containing the painter’s image. A snip is
+an image that DrScheme can display automatically.
+
+(paint p) -> snip?
+  p : painter?
+
+(paint-hi-res p) -> snip?
+  p : painter?
+
+11. Authors
+
+Abelson & Sussman:
+Structure and Interpretation of Computer Programs.
+
+Daniel Coore: Original MIT Scheme code.
+
+Mike Sperber: PLT port.
+
+Jens Axel Søgaard: Documentation.
+
+12. Other
+
+See also the
+readme.html
+from the SICP web-site for more documentation and exercises.
+
+Peter Henderson’s
+"Functional Geometry".
+
+Index
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+ 
+(planet "sicp.ss" ("soegaard" "sicp.plt" 2 1))
+Authors
+below
+beside
+Escher
+Example
+flip-horiz
+flip-vert
+frame-coord-map
+frame-edge1
+frame-edge2
+frame-origin
+Frames
+geometry
+Higher Order Painters
+Introduction
+load-painter
+make-frame
+make-relative-frame
+make-segment
+make-vect
+number->painter
+Other
+paint
+paint-hi-res
+painter
+Painting
+picture
+picture->painter
+Primitive Painters
+procedure->painter
+Reference
+rotate180
+rotate270
+rotate90
+segment-end
+segment-start
+Segments
+segments->painter
+SICP
+sicp
+Simple Builtin Painters
+superpose
+The SICP Picture Language
+transform-painter
+vector-add
+vector-scale
+vector-sub
+vector-xcor
+vector-ycor
+Vectors
