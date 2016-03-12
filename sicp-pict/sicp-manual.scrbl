@@ -3,7 +3,8 @@
 @(require scribble/manual scribble/eval
           (for-label scheme sicp-pict))
 
-@title{The SICP Picture Language}
+@title{SICP Collections}
+@defmodule[sicp]
 @defmodule[sicp-pict]
 @index["SICP"]{}
 @index["sicp"]{}
@@ -12,17 +13,76 @@
 @index["picture"]{}
 @index["Escher"]{}
 
-This package provides support for the picture language used in SICP.
+@section{Introduction}
+
+This package contains two collections.
+
+The @racket[sicp] collection contains a @tt{#lang sicp} language ideal
+for studying the book "Structure and Interpretation of Computer Programs"
+by Gerald Jay Sussman and Hal Abelson. The book is usually referred
+to simply as SICP.
+
+The second @racket[sicp-pict] collection contains the picture language used in SICP.
 The non-standard primitives @scheme[cons-stream] and @scheme[amb] are
 also provided.
 
 @section{Installation}
-Open in Package Manager in DrRacket: "File | Package Manager...".
-In the tab "Do What I Mean" find the text field and enter:  @scheme[sicp]
+Use DrRacket to install the sicp package like this:
 
-Then click the Install button. 
+@itemlist[
+@item{Open the Package Manager:
+      in DrRacket choose the menu "File" then choose "Package Manager...".}
+@item{In the tab "Do What I Mean" find the text field and enter:  @racket{sicp}}
+@item{Finally click the "Install" button.}
+@item{Test it. Make sure DrRacket has "Determine language from source" in the bottom left corner.
+      Write the following program and click run:
 
-@section{Introduction}
+@verbatim{#lang sicp
+          (inc 42)}
+
+The expected output is @racket[43].}
+
+          #:style 'ordered]
+          
+
+
+@section{Introduction to the @tt{#lang sicp} language}
+
+The programs in the book are written in (a subset of) the programming language Scheme.
+As the years have passed the programming language Scheme has evolved.
+The language @tt{#lang sicp} provides you with a version of R5RS (the fifth revision of Scheme)
+changed slightly in order for programs in SICP to run as is.
+
+The changes are as follows:
+
+The identifers @racket[true], @racket[false], and, @racket[nil] are provided
+with values @racket[#t], @racket[#f], and, @racket['()] respectively.
+
+The following functions of one variable are provided:
+@verbatim{
+    (define (identity x) x)         the identity funciton
+    (define (inc x) (+ x 1))        increment 
+    (define (dec x) (- x 1))        decrement}
+
+There are no streams in R5RS, so the sicp language provides the
+primitives @racket[cons-stream] and @racket[stream-null?] that
+respectively constructs a stream and tests whether a stream is the null stream.
+The null-stream is provided as @racket[the-empty-stream].
+
+Finally the function @racket[runtime] is provided. It gives you the current
+time measured as the number of seconds passed since a fixed beginning.
+
+To use the @tt{sicp} language simply use @tt{#lang sicp} as the
+first line of your program. If you need to use Racket libraries,
+then use @racket[#%require] (Note: R5RS has no @racket[require] so
+in order not to break any programs using the name @racket[require] to
+other things, the name @racket[#%require] is used instead.
+
+
+
+
+
+@section{Introduction to the SICP Picture Language}
 
 The SICP Picture Language is a small language for drawing pictures.
 It shows the power of data abstraction and closure. The picture language
@@ -50,6 +110,23 @@ it's image (shifted and scaled) within a frame given by a parallelogram.
 Painters can be combined to construct new painters.
 
 @section{Example}
+
+Using @racket[sicp-pict] from a @racket{#lang sicp} program:
+
+@verbatim{
+          #lang sicp
+          (#%require sicp-pict)
+          (paint einstein)}
+
+
+Using @racket[sicp-pict] from a @racket{#lang racket} program:
+
+@verbatim{
+          #lang racket
+          (require sicp-pict)
+          (paint einstein)}
+
+From the REPL:
 
 @schemeblock[
 > (require sicp-pict)
