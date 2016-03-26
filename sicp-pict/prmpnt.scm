@@ -104,7 +104,16 @@
 
 ;;;; Creating painters from a list of line segments, defined wrt the unit square.
 
-(define (segments->painter segments)
+(require compatibility/mlist)
+
+(define (segments->painter segments/msegments)
+  (define (convert x)
+    (define c convert)
+    (cond
+      [(mpair? x) (cons (c (mcar x)) (c (mcdr x)))]
+      [(pair?  x) (cons (c (car x))  (c (cdr x)))]
+      [else       x]))
+  (define segments (convert segments/msegments))
   (lambda (frame)
     (let ((coord-map
            (lambda (v)
