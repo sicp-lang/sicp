@@ -42,11 +42,11 @@
 
 ;;; ### Soegaard: Uncommented this, in order to work with
 ;;;     images in other directories.
-#;(define (load-painter file-name)
-  (picture->painter
-   (image-file->picture
-    (build-path (collection-path "picture")
-		(string-append file-name ".gif")))))
+;;; (define (load-painter file-name)
+;;;  (picture->painter
+;;;   (image-file->picture
+;;;    (build-path (collection-path "picture")
+;;;		(string-append file-name ".gif")))))
 
 (define (load-painter file-name)
   (picture->painter
