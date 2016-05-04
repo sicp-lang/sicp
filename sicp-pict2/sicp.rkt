@@ -25,7 +25,8 @@
           [vector-ycor  (->   vect?        real?)]     ; access y-coordinate
           [vector-add   (->   vect? vect?  vect?)]     ; add two vectors
           [vector-sub   (->   vect? vect?  vect?)]     ; subtract two vectors
-          [vector-scale (-> number? vect?  vect?)]))   ; scale a vector
+          [vector-scale (-> number? vect?  vect?)]     ; scale a vector
+          [zero-vector  vect?]))
 
 (struct vect (x y)
   #:extra-constructor-name make-vect
@@ -48,6 +49,11 @@
 ;;;
 ;;; Frames
 ;;;
+
+(provide (contract-out
+          [struct frame ([origin vect?] [edge1 vect?] [edge2 vect?])]       ; structure
+          [frame-coord-map     (-> frame?             (-> vect? vect?))]    
+          [make-relative-frame (-> vect? vect? vect?  (-> frame? frame?))]))
 
 (struct frame (origin edge1 edge2)
   #:extra-constructor-name make-frame
@@ -87,6 +93,13 @@
 
 ;; Note: The initial matrix has the same order: xx xy yx yy x0 y0
 ;;       So we could just keep the vector returned from the drawing context by get-initial-matrix
+
+(provide (contract-out
+          [struct trans ([xx real?] [xy real?] [yx real?] [yy real?] [x0 real?] [y0 real?])]
+          [compose-transformation (-> trans? trans? trans?)]
+          [vector->transformation (-> vector? trans?)]
+          [transformation->vector (-> trans? vector?)]
+          [frame->transformation  (-> frame? trans?)]))
 
 (struct trans (xx xy yx yy x0 y0)
   #:transparent)
@@ -128,6 +141,10 @@
 ;;; Segments
 ;;;
 
+(provide (contract-out
+          [struct segment ([start vect?] [end vect?])]
+          [vects->segments (-> (listof vect?) (listof segment?))]))
+
 ; A segment represents a line segment from start point to end point.
 ; The start and end points are represented as vects.
 
@@ -149,24 +166,41 @@
 ;;; COLORS, PENS, AND, BRUSHES
 ;;;
 
-(define (color? o)
-  (and (object? o) (is-a? o color%)))
+(provide (contract-out
+          [color-object?      (-> any/c boolean?)]
+          [pen-object?        (-> any/c boolean?)]
+          [brush-object?      (-> any/c boolean?)]
+          [new-color          any/c]
+          #;[new-color          (or/c (-> real? real? real?                    color-object?)
+                                      (-> (or/c number? string? color-object?) color-object?))]
+          [new-pen            (-> any/c pen-object?)]
+          [new-brush          (-> any/c brush-object?)]
+          [new-stipple-brush  (-> any/c brush-object?)]
+          [black-color        color-object?]
+          [white-color        color-object?]
+          [black-pen          pen-object?]
+          [black-brush        brush-object?]
+          [transparent-brush  brush-object?]))
+
+(define (color-object? o) (and (object? o) (is-a? o color%)))
+(define (pen-object? o)   (and (object? o) (is-a? o pen%)))
+(define (brush-object? o) (and (object? o) (is-a? o brush%)))
 
 (define new-color
-  (let () ; make a cache of pens in order to reuse them
+  (let () ; make a cache of colors in order to reuse them
     (define colors (make-hash))
     (λ ns
       (hash-ref! colors ns
                  (λ ()
                    (match ns
-                     [(list (? number? n))  (let ([n (inexact->exact (floor n))])
-                                              (make-object color% n n n))]
-                     [(list r g b)          (let ([r (inexact->exact (floor r))]
-                                                  [g (inexact->exact (floor g))]
-                                                  [b (inexact->exact (floor b))])
-                                            (make-object color% r g b))]
-                     [(list (? string? s))  (make-object color% s)]                     
-                     [(list (? color? c))   c]
+                     [(list (? number? n))        (let ([n (inexact->exact (floor n))])
+                                                    (make-object color% n n n))]
+                     [(list r g b)                (let ([r (inexact->exact (floor r))]
+                                                        [g (inexact->exact (floor g))]
+                                                        [b (inexact->exact (floor b))])
+                                                    (make-object color% r g b))]
+                     [(list (? string? s))        (make-object color% s)]                     
+                     [(list (? color-object? c))  c]
                      [_ (error 'new-color)]))))))
 
 (define new-pen ; draws lines and outlines
@@ -214,7 +248,7 @@
 (define current-dc (make-parameter #f))
 
 ; To get a painting from a painter, we need to create a new
-; bitmap into which the painter can draw. 
+; bitmap into which the painter can draw.
 (define (paint painter)
   (define-values (bm dc) (make-painter-bitmap 200 200))
   (parameterize ([current-bm bm]
@@ -318,6 +352,20 @@
 ;;; Primitive Painters
 ;;;
 
+(provide with-transformation
+         with-frame
+         with-pen
+         with-brush
+         ;
+         paint
+         ;
+         color->painter
+         number->painter
+         segments->painter
+         vects->painter
+         bitmap->painter
+         procedure->painter)
+
 ;;; Color Painter
 ;;;     A color painter fills the unit square with a solid color
 (define (color->painter c)
@@ -334,7 +382,7 @@
 ;;;     A number painter is a color painter that draws a gray color from 0 to 255.
 (define (number->painter number-or-color)
   (define n number-or-color)
-  (unless (or (and (number? n) (<= 0 n 255)) (color? n))
+  (unless (and (number? n) (<= 0 n 255))
     (raise-type-error 'number->painter "number between 0 and 255" n))
   (color->painter (new-color n)))
 
@@ -360,20 +408,25 @@
 ;;; Bitmap Painter
 ;;;     A bitmap painter draws a bitmap.
 (define (bitmap->painter bitmap)
-  (define bm (if (or (string? bitmap) (path? bitmap))
-                 (make-object bitmap% bitmap)
-                 bitmap))
-  (define bm-dc (new bitmap-dc% [bitmap bm]))
+  (define (new-bm) (if (or (string? bitmap) (path? bitmap))
+                       (make-object bitmap% bitmap)
+                       bitmap))
+  (define bm         (new-bm))
+  (define bm-dc      (new bitmap-dc% [bitmap bm]))
+  (define flipped-bm (new-bm))
+  (define flipped-dc (new bitmap-dc% [bitmap flipped-bm]))
   (define w (* 1. (send bm get-width)))
   (define h (* 1. (send bm get-height)))
+  (send flipped-dc set-initial-matrix (vector 1 0 0 -1 0 h))
+  (send flipped-dc draw-bitmap bm 0 0)  
   (λ (frame)
     (with-frame frame
       (send (current-dc) draw-bitmap-section-smooth
-            bm     ; source
-            0. 0.  ; dest-x dest-y
-            1. 1.  ; dest-width dest-height
-            0. 0.  ; src-x src-y
-            w  h   ; src-width src-height
+            flipped-bm ; source
+            0. 0.      ; dest-x dest-y
+            1. 1.      ; dest-width dest-height
+            0. 0.      ; src-x src-y
+            w  h       ; src-width src-height
             ))))
 
 ;;; Procedure Painter
@@ -407,6 +460,9 @@
 ;;;
 
 ;; See SICP for a description of these painters
+(provide transform-painter
+         flip-horiz flip-vert rotate90 rotate180 rotate270
+         superpose beside beside3 above3 below)
 
 (define (transform-painter painter origin corner1 corner2)
   (compose painter (make-relative-frame origin corner1 corner2)))
@@ -451,6 +507,9 @@
 ;;;
 ;;; Predefined Basic Painters
 ;;;
+(provide black white gray diagonal-shading mark-of-zorro einstein)
+(provide echo)
+
 (define black            (number->painter   0))
 (define white            (number->painter 255))
 (define gray             (number->painter 150))
@@ -458,35 +517,6 @@
 (define mark-of-zorro    (vects->painter (list (vect .1 .9) (vect .8 .9) (vect .1 .2) (vect .9 .3))))
 (define einstein         (bitmap->painter (build-path (this-expression-source-directory)
                                                       "einstein2.jpg")))
-
-;;;
-;;; EXAMPLES / TESTS
-;;;
-
-(define p mark-of-zorro)
-(echo p)
-(echo (flip-horiz p))
-(echo (flip-vert p))
-(echo (rotate90 p))
-(echo (rotate180 p))
-(echo (rotate270 p))
-(echo (beside p (flip-horiz p)))
-(echo (below p (flip-horiz p)))
-(echo einstein)
-(echo (rotate90 einstein))
-(echo (flip-horiz einstein))
-(echo (flip-vert einstein))
-(define (quad p)
-  (define top    (beside p (flip-horiz p)))
-  (define bottom (flip-vert top))
-  (below top bottom))
-(echo (quad einstein))
-(echo (quad (quad einstein)))
-(echo (quad (quad (quad einstein))))
-(echo (vects->painter (list (vect 0 0) (vect 1 0) (vect 1 1) (vect 0 1) (vect 0 0))))
-(echo (procedure->painter (lambda (x y) (new-color (* x 255) 0 0))))           ; shade to black
-(echo (procedure->painter (lambda (x y) (new-color 255 (* x 255) (* x 255))))) ; shade to white
-(echo (procedure->painter (lambda (x y) (new-color (* x x) (* x 255) (* (- 1 x) 255)))))
 
 ;;; Escher Example
 
@@ -579,4 +609,4 @@
   (define square-limit (cycle corner))
   square-limit)
 
-(echo (escher))
+;(echo (escher))
