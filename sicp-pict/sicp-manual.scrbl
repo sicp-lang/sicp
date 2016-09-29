@@ -346,6 +346,8 @@ Jens Axel Søgaard: Documentation.
 
 Javier Olaechea: Fixed amb.
 
+Neil Van Dyke: The SICP language. Maintained the sicp package for years.                 
+
 @section{Other}
 
 See also the
