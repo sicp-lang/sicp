@@ -5,11 +5,12 @@
                  current-print
                  flush-output
                  make-parameter
-                 void?)
-           (rename racket/base racket:module-begin #%module-begin))
+                 void?
+                 module
+                 #%printing-module-begin))
 
 (#%provide (all-from-except r5rs #%module-begin)
-           (rename racket:module-begin #%module-begin))
+           (rename module-begin #%module-begin))
 
 (#%provide true)
 (define true #t)
@@ -43,3 +44,13 @@
 
 (#%provide stream-null?)
 (define (stream-null? x) (null? x))
+
+(define-syntax module-begin
+  (syntax-rules ()
+    ((_ . forms)
+     (#%printing-module-begin
+      (module configure-runtime '#%kernel
+        (print-as-expression #f)
+        (print-pair-curly-braces  #t)
+        (print-mpair-curly-braces #f))
+      . forms))))
