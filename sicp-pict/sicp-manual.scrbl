@@ -60,7 +60,7 @@ with values @racket[#t], @racket[#f], and, @racket['()] respectively.
 
 The following functions of one variable are provided:
 @verbatim{
-    (define (identity x) x)         the identity funciton
+    (define (identity x) x)         the identity function
     (define (inc x) (+ x 1))        increment 
     (define (dec x) (- x 1))        decrement}
 
