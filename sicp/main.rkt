@@ -44,3 +44,5 @@
 
 (#%provide stream-null?)
 (define (stream-null? x) (null? x))
+
+(#%provide error)
