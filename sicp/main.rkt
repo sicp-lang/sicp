@@ -5,6 +5,7 @@
                  current-print
                  flush-output
                  make-parameter
+                 error
                  void?)
            (rename racket/base racket:module-begin #%module-begin))
 
