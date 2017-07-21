@@ -69,13 +69,16 @@ primitives @racket[cons-stream] and @racket[stream-null?] that
 respectively constructs a stream and tests whether a stream is the null stream.
 The null-stream is provided as @racket[the-empty-stream].
 
-The function @racket[random] is provided. See
-@link["https://docs.racket-lang.org/reference/generic-numbers.html#%28part._.Random_.Numbers%29"
-      "Random Numbers"]
-for more documentation.
+A @racket[random] function is provided, with different semantics from the one provided by Racket.
 
-Finally the function @racket[runtime] is provided. It gives you the current
-time measured as the number of seconds passed since a fixed beginning.
+@defproc[(random [n number?]) number?]{
+If random is given an exact integer it returns an exact integer, but if it is given a decimal value it returns a decimal value.
+}
+
+Finally, the function @racket[runtime] is provided. It returns the
+@link["https://en.wikipedia.org/wiki/Unix_time"
+      "epoch time"]
+in microseconds.
 
 To use the @tt{sicp} language simply use @tt{#lang sicp} as the
 first line of your program. If you need to use Racket libraries,
@@ -351,7 +354,9 @@ Jens Axel Søgaard: Documentation.
 
 Javier Olaechea: Fixed amb.
 
-Neil Van Dyke: The SICP language. Maintained the sicp package for years.                 
+Neil Van Dyke: The SICP language. Maintained the sicp package for years.
+
+Pavan Maddamsetti: Added random, fixed documentation.
 
 @section{Other}
 
