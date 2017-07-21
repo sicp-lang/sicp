@@ -3,9 +3,10 @@
 (#%require (only racket/base
                  current-inexact-milliseconds
                  current-print
+                 error
                  flush-output
                  make-parameter
-                 error
+                 random
                  void?)
            (rename racket/base racket:module-begin #%module-begin))
 
@@ -46,3 +47,5 @@
 (define (stream-null? x) (null? x))
 
 (#%provide error)
+
+(#%provide random)
