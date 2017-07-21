@@ -60,7 +60,7 @@ with values @racket[#t], @racket[#f], and, @racket['()] respectively.
 
 The following functions of one variable are provided:
 @verbatim{
-    (define (identity x) x)         the identity funciton
+    (define (identity x) x)         the identity function
     (define (inc x) (+ x 1))        increment 
     (define (dec x) (- x 1))        decrement}
 
@@ -68,6 +68,11 @@ There are no streams in R5RS, so the sicp language provides the
 primitives @racket[cons-stream] and @racket[stream-null?] that
 respectively constructs a stream and tests whether a stream is the null stream.
 The null-stream is provided as @racket[the-empty-stream].
+
+The function @racket[random] is provided. See
+@link["https://docs.racket-lang.org/reference/generic-numbers.html#%28part._.Random_.Numbers%29"
+      "Random Numbers"]
+for more documentation.
 
 Finally the function @racket[runtime] is provided. It gives you the current
 time measured as the number of seconds passed since a fixed beginning.
