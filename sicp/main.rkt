@@ -8,7 +8,8 @@
                  make-parameter
                  random
                  void?)
-           (rename racket/base racket:module-begin #%module-begin))
+           (rename racket/base racket:module-begin #%module-begin)
+           (rename racket/base random* random))
 
 (#%provide (all-from-except r5rs #%module-begin)
            (rename racket:module-begin #%module-begin))
@@ -49,3 +50,7 @@
 (#%provide error)
 
 (#%provide random)
+(define (random n)
+  (if (and (exact? n) (integer? n))
+      (random* n)
+      (* n (random*))))
