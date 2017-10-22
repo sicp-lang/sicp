@@ -46,3 +46,11 @@
 (define (stream-null? x) (null? x))
 
 (#%provide error)
+
+
+(#%provide (rename sicp-random random))
+(#%require (only racket random))
+(define (sicp-random n)
+  (if (and (integer? n) (exact? n))
+      (random n)
+      (* n (random))))
