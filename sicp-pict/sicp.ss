@@ -6,12 +6,26 @@
 
   ;;; STREAMS
   (provide cons-stream)
-
+  (provide stream-car)
+  (provide stream-cdr)
+  (provide the-empty-stream)
+  (provide stream-null?)
 
   (define-syntax cons-stream
     (syntax-rules ()
       [(cons-stream x xs)
        (cons x (delay xs))]))
+
+  (define (stream-car x)
+    (car x))
+
+  (define (stream-cdr x)
+    (force (cdr x)))
+
+  (define the-empty-stream '())
+
+  (define (stream-null? x)
+    (null? x))
 
   ;;; AMB
   (provide amb)
