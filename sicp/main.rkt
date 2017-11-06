@@ -39,6 +39,14 @@
   (syntax-rules ()
     ((_ A B) (cons A (delay B)))))
 
+(#%provide stream-car)
+(define (stream-car x)
+  (car x))
+
+(#%provide stream-cdr)
+(define (stream-cdr x)
+  (force (cdr x)))
+
 (#%provide the-empty-stream)
 (define the-empty-stream '())
 
