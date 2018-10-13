@@ -54,3 +54,30 @@
   (if (and (integer? n) (exact? n))
       (random n)
       (* n (random))))
+
+(#%provide amb)
+(define amb-fail '*)
+
+(define (initialize-amb-fail)
+  (set! amb-fail
+    (lambda ()
+      (display "amb tree exhausted"))))
+
+(initialize-amb-fail)
+
+(define call/cc call-with-current-continuation)
+
+(define-syntax amb
+  (syntax-rules ()
+    ((amb alts ...)
+     (let ((prev-amb-fail amb-fail))
+       (call/cc
+        (lambda (sk)
+          (call/cc
+           (lambda (fk)
+             (set! amb-fail
+               (lambda ()
+                 (set! amb-fail prev-amb-fail)
+                 (fk 'fail)))
+             (sk alts))) ...
+             (prev-amb-fail)))))))
