@@ -38,6 +38,17 @@
 (define-syntax cons-stream
   (syntax-rules ()
     ((_ A B) (cons A (delay B)))))
+    
+
+(define (stream-car stream) (car stream))
+
+(define (stream-cdr stream) (force (cdr stream)))
+
+(define (stream-map proc s)
+  (if (stream-null? s)
+      the-empty-stream
+      (cons-stream (proc (stream-car s))
+                   (stream-map proc (stream-cdr s)))))
 
 (#%provide the-empty-stream)
 (define the-empty-stream '())
