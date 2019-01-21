@@ -361,7 +361,7 @@
          with-pen
          with-brush
          ;
-         paint
+         paint paint-hires paint-hi-res
          ;
          color->painter
          number->painter
