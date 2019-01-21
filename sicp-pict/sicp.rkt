@@ -256,6 +256,10 @@
     (send dc scale 0.99 0.99) ; make the entire unit square visible
     (painter (frame (vect 0. 0.) (vect 1. 0.) (vect 0. 1.)))
     (make-object image-snip% bm)))
+    
+; For compatibility with old texts.    
+(define paint-hi-res paint)
+(define paint-hires  paint)
 
 ; Painters assume the image as coordinates (0,0) in the
 ; lower left corner and (1,1) in the upper right corner.
