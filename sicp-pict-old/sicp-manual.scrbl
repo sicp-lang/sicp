@@ -1,7 +1,9 @@
 #lang scribble/doc
 
 @(require scribble/manual scribble/eval
-          (for-label scheme sicp-pict))
+          (for-label scheme
+                     sicp-pict
+                     (only-in racket/contract and/c <=/c)))
 
 @title{SICP Collections}
 @defmodule[sicp]
@@ -232,12 +234,12 @@ second vector.
 Painters take a frame and draw an image, transformed to fit inside the frame.
 
 There are four ways to create painters:
-@itemize{@item{from a constant: @scheme[number->painter]}
-              @item{from a list of line segments:  @scheme[segment->painter]}
-              @item{form a procedure:              @scheme[procedure->painter]}
-              @item{from a picture:                @scheme[picture->painter]}}
+@itemize[@item{from a constant: @scheme[number->painter]}
+         @item{from a list of line segments:  @scheme[segment->painter]}
+         @item{form a procedure:              @scheme[procedure->painter]}
+         @item{from a picture:                @scheme[picture->painter]}]
 
-@defproc[(number->painter [color 0..255]) painter?]{
+@defproc[(number->painter [color (and/c integer? (<=/c 1 255))]) painter?]{
 Constructs a painter that fills the frame with a gray color indicated
 by the number. 0 is black and 255 is white.
 }
