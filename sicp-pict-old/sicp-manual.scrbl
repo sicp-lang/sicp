@@ -239,7 +239,7 @@ There are four ways to create painters:
          @item{form a procedure:              @scheme[procedure->painter]}
          @item{from a picture:                @scheme[picture->painter]}]
 
-@defproc[(number->painter [color (and/c integer? (<=/c 1 255))]) painter?]{
+@defproc[(number->painter [color (and/c natural-number/c (<=/c 255))]) painter?]{
 Constructs a painter that fills the frame with a gray color indicated
 by the number. 0 is black and 255 is white.
 }
