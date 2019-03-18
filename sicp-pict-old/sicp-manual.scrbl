@@ -91,7 +91,7 @@ included by Hal Abelson in "Structure and Interpretation of Computer
 Programs".  
 
 Before using this package, read 
-@link["http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4" 
+@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4" 
       "section 2.2.4 of SICP"],
 which is an excellent introduction to the ideas of the picture language.
 This manual is meant as a reference guide.
@@ -335,7 +335,7 @@ an image that DrScheme can display automatically.
 @section{Authors}
 
 Abelson & Sussman: 
-@link["http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"
+@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"
       "Structure and Interpretation of Computer Programs"].
 
 Daniel Coore: Original MIT Scheme code.
@@ -351,7 +351,7 @@ Neil Van Dyke: The SICP language. Maintained the sicp package for years.
 @section{Other}
 
 See also the
-@link["http://mitpress.mit.edu/sicp/psets/ps4hnd/readme.html"
+@link["https://mitpress.mit.edu/sites/default/files/sicp/psets/ps4hnd/readme.html"
       "readme.html"] 
 from the SICP web-site for more documentation and exercises.
 
