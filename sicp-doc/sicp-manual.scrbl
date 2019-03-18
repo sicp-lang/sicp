@@ -1,7 +1,7 @@
 #lang scribble/doc
 
 @(require scribble/manual scribble/eval
-          (for-label scheme
+          (for-label (only-in sicp true false nil identity inc dec)
                      sicp-pict
                      (only-in racket/contract and/c <=/c)))
 
@@ -55,18 +55,6 @@ changed slightly in order for programs in SICP to run as is.
 
 The changes are as follows:
 
-The identifers @racket[true], @racket[false], and, @racket[nil] are provided
-with values @racket[#t], @racket[#f], and, @racket['()] respectively.
-
-The following functions of one variable are provided:
-@#reader scribble/comment-reader
-(racketblock
- (define (identity x) x)  ;; the identity function
- (define (inc x) (+ x 1)) ;; increment
- (define (dec x) (- x 1)) ;; decrement
-)
-
-
 There are no streams in R5RS, so the sicp language provides the
 primitives @racket[cons-stream] and @racket[stream-null?] that
 respectively constructs a stream and tests whether a stream is the null stream.
@@ -81,6 +69,31 @@ then use @racket[#%require] (Note: R5RS has no @racket[require] so
 in order not to break any programs using the name @racket[require] to
 other things, the name @racket[#%require] is used instead.
 
+@section{Built-In}
+
+@defthing[true boolean?]{
+  The same as @racket[#t].
+}
+
+@defthing[false boolean?]{
+  The same as @racket[#f].
+}
+
+@defthing[nil null?]{
+  The same as @racket['()].
+}
+
+@defproc[(identity [x any/c]) any/c]{
+  Returns @racket[x].
+}
+
+@defproc[(inc [x real?]) real?]{
+  Returns @racket[(+ x 1)].
+}
+
+@defproc[(dec [x real?]) real?]{
+  Returns @racket[(- x 1)].
+}
 
 @section{Introduction to the SICP Picture Language}
 
@@ -333,14 +346,13 @@ The following painter values are built-in:
 
 @section{Painting}
 
-@deftogether[(@defproc[(paint [p painter?]) snip?]
-              @defproc[(paint-hi-res [p painter?]) snip?]
-              @defproc[(paint-hires [p painter?]) snip?])]{
-  Take a painter as input and return a snip containing the painter's image.
-  A snip is an image that DrRacket can display automatically.
+@defproc[(paint [p painter?]) snip?]{
+  Returns a snip, an image that DrRacket can display automatically, containing the painter's image.
+}
 
-  @racket[paint-hi-res] and @racket[paint-hires] are the same as @racket[paint].
-  They are provided for compatibility with old texts.
+@deftogether[(@defproc[(paint-hi-res [p painter?]) snip?]
+              @defproc[(paint-hires [p painter?]) snip?])]{
+  The same as @racket[paint]. They are provided for compatibility with old texts.
 }
 
 @section{Authors}
