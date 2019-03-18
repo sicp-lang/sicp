@@ -196,14 +196,16 @@ Constructs a frame from a frame origin vector and two frame edge vectors.
 Extracts the origin, first edge or second edge from a frame.
 }
 
-@defproc[(make-relative-frame [origin vect?] [corner1 vect?] [corner2 vect?]) (frame? -> frame?)]{
+@defproc[(make-relative-frame [origin vect?]
+                              [corner1 vect?]
+                              [corner2 vect?]) (frame? . -> . frame?)]{
 The function @scheme[make-relative-frame] provides a convenient way to
 transform frames.  Given a frame and three points : @scheme[origin], 
 @scheme[corner1], and @scheme[corner2] (expressed in frame coordinates), 
 it returns a new frame with those corners.
 }
 
-@defproc[(frame-coord-map [f frame?]) (vect? -> vect?)]{
+@defproc[(frame-coord-map [f frame?]) (vect? . -> . vect?)]{
 Each frame determines a system of "frame coordinates" (x,y) where
 (0,0) is the origin of the frame, x represents the displacement 
 along the first edge (as a fraction of the length of the edge) and 
@@ -274,7 +276,9 @@ Uses the image file given by filename to create a painter.}
 
 @section{Higher Order Painters}
 
-@defproc[(transform-painter [origin vect?] [corner1 vect?] [corner2 vect?]) (painter? -> painter?)]{
+@defproc[(transform-painter [origin vect?]
+                            [corner1 vect?]
+                            [corner2 vect?]) (painter? . -> . painter?)]{
 A painter can be transformed to produce a new painter which, when
 given a frame, calls the original painter on the transformed frame.
 
@@ -311,17 +315,21 @@ on top of each other.}
 
 The following painter values are buitin:
 
-  @scheme[black], @scheme[white] and @scheme[gray] 
-     Fills the frame with black (0), white (255) or gray (150).
+@deftogether[(@defthing[black painter?]
+              @defthing[white painter?]
+              @defthing[gray painter?])]{
+  Fills the frame with black (0), white (255) or gray (150).
+}
 
-  @scheme[diagonal-shading]  
-    Fills the frame with a shades of gray. The color transition
-    goes from black in the upper left corner is black, to gray
-    in the bottom right corner.
+@defthing[diagonal-shading painter?]{
+  Fills the frame with a shades of gray. The color transition
+  goes from black in the upper left corner is black, to gray
+  in the bottom right corner.
+}
 
-  @scheme[einstein] 
-    Draws an image of Einstein.
-
+@defthing[einstein painter?]{
+  Draws an image of Einstein.
+}
 
 @section{Painting}
 
