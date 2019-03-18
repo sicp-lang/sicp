@@ -30,22 +30,21 @@ The second @racket[sicp-pict] collection contains the picture language used in S
 @section{Installation}
 Use DrRacket to install the sicp package like this:
 
-@itemlist[
+@itemlist[#:style 'ordered
 @item{Open the Package Manager:
       in DrRacket choose the menu "File" then choose "Package Manager...".}
-@item{In the tab "Do What I Mean" find the text field and enter:  @racket{sicp}}
+@item{In the tab "Do What I Mean" find the text field and enter: @tt{sicp}}
 @item{Finally click the "Install" button.}
 @item{Test it. Make sure DrRacket has "Determine language from source" in the bottom left corner.
       Write the following program and click run:
 
-@verbatim{#lang sicp
-          (inc 42)}
+@codeblock{
+  #lang sicp
+  (inc 42)
+}
 
 The expected output is @racket[43].}
-
-          #:style 'ordered]
-          
-
+]
 
 @section{Introduction to the @tt{#lang sicp} language}
 
@@ -60,10 +59,13 @@ The identifers @racket[true], @racket[false], and, @racket[nil] are provided
 with values @racket[#t], @racket[#f], and, @racket['()] respectively.
 
 The following functions of one variable are provided:
-@verbatim{
-    (define (identity x) x)         the identity function
-    (define (inc x) (+ x 1))        increment 
-    (define (dec x) (- x 1))        decrement}
+@#reader scribble/comment-reader
+(racketblock
+ (define (identity x) x)  ;; the identity function
+ (define (inc x) (+ x 1)) ;; increment
+ (define (dec x) (- x 1)) ;; decrement
+)
+
 
 There are no streams in R5RS, so the sicp language provides the
 primitives @racket[cons-stream] and @racket[stream-null?] that
@@ -78,9 +80,6 @@ first line of your program. If you need to use Racket libraries,
 then use @racket[#%require] (Note: R5RS has no @racket[require] so
 in order not to break any programs using the name @racket[require] to
 other things, the name @racket[#%require] is used instead.
-
-
-
 
 
 @section{Introduction to the SICP Picture Language}
@@ -112,20 +111,21 @@ Painters can be combined to construct new painters.
 
 @section{Example}
 
-Using @racket[sicp-pict] from a @racket{#lang sicp} program:
+Using @racket[sicp-pict] from a @tt{#lang sicp} program:
 
-@verbatim{
-          #lang sicp
-          (#%require sicp-pict)
-          (paint einstein)}
+@codeblock{
+  #lang sicp
+  (#%require sicp-pict)
+  (paint einstein)
+}
 
+Using @racket[sicp-pict] from a @tt{#lang racket} program:
 
-Using @racket[sicp-pict] from a @racket{#lang racket} program:
-
-@verbatim{
-          #lang racket
-          (require sicp-pict)
-          (paint einstein)}
+@codeblock{
+  #lang racket
+  (require sicp-pict)
+  (paint einstein)
+}
 
 From the REPL:
 
@@ -133,10 +133,10 @@ From the REPL:
 > (require sicp-pict)
 > (paint (number->painter 0))
 > (paint diagonal-shading)
-> (paint-hires  (below (beside diagonal-shading 
-                        (rotate90 diagonal-shading))
-                (beside (rotate270 diagonal-shading)
-                        (rotate180 diagonal-shading))))
+> (paint (below (beside diagonal-shading
+                (rotate90 diagonal-shading))
+         (beside (rotate270 diagonal-shading)
+                 (rotate180 diagonal-shading))))
 > (paint einstein)
 ]
 
@@ -236,7 +236,7 @@ second vector.
 Painters take a frame and draw an image, transformed to fit inside the frame.
 
 There are four ways to create painters:
-@itemize[@item{from a constant: @scheme[number->painter]}
+@itemize[@item{from a constant:               @scheme[number->painter]}
          @item{from a list of line segments:  @scheme[segment->painter]}
          @item{form a procedure:              @scheme[procedure->painter]}
          @item{from a picture:                @scheme[picture->painter]}]
@@ -248,7 +248,7 @@ by the number. 0 is black and 255 is white.
 
 @defproc[(segments->painter [los list-of-segment?]) painter?]{
 Constructs a painter that draws a stick figure given by the 
-segments (wrt the unit square).}
+segments (w.r.t. the unit square).}
 
 
 @defproc[(procedure->painter [p procedure?]) painter?]{
@@ -287,25 +287,25 @@ a function that takes a painter as argument and returns
 a transformed painter.
 }
 
-@defproc[(flip-horiz [p painter]) painter?]{
+@defproc[(flip-horiz [p painter?]) painter?]{
 Returns a painter that flips the image horizontally.}
 
-@defproc[(flip-vert [p painter]) painter?]{
+@defproc[(flip-vert [p painter?]) painter?]{
 Returns a painter that flips the image vertically.}
 
-@defproc[(rotate90 [p painter]) painter?]{}
-@defproc[(rotate180 [p painter]) painter?]{}
-@defproc[(rotate270 [p painter]) painter?]{
+@defproc[(rotate90 [p painter?]) painter?]{}
+@defproc[(rotate180 [p painter?]) painter?]{}
+@defproc[(rotate270 [p painter?]) painter?]{
 Returns a painter that rotates the image.}
 
-@defproc[(beside [p1 painter] [p2 painter]) painter?]{
+@defproc[(beside [p1 painter?] [p2 painter?]) painter?]{
 Constructs a painter that paints the images side-by-side.}
 
-@defproc[(below [p1 painter] [p2 painter]) painter?]{
+@defproc[(below [p1 painter?] [p2 painter?]) painter?]{
 Constructs a painter that paints the second image
 below the first.}
 
-@defproc[(superpose [p1 painter] [p2 painter]) painter?]{
+@defproc[(superpose [p1 painter?] [p2 painter?]) painter?]{
 Constructs a painter that paints the two images
 on top of each other.}
 
@@ -313,7 +313,7 @@ on top of each other.}
 
 @section{Simple Builtin Painters}
 
-The following painter values are buitin:
+The following painter values are built-in:
 
 @deftogether[(@defthing[black painter?]
               @defthing[white painter?]
@@ -346,8 +346,7 @@ The following painter values are buitin:
 @section{Authors}
 
 Abelson & Sussman: 
-@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"
-      "Structure and Interpretation of Computer Programs"].
+@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"]{Structure and Interpretation of Computer Programs}.
 
 Daniel Coore: Original MIT Scheme code.
 
