@@ -25,7 +25,7 @@
           [vector-ycor  (->   vect?        real?)]     ; access y-coordinate
           [vector-add   (->   vect? vect?  vect?)]     ; add two vectors
           [vector-sub   (->   vect? vect?  vect?)]     ; subtract two vectors
-          [vector-scale (-> number? vect?  vect?)]     ; scale a vector
+          [vector-scale (->   real? vect?  vect?)]     ; scale a vector
           [zero-vector  vect?]))
 
 (struct vect (x y)
@@ -361,7 +361,9 @@
          with-pen
          with-brush
          ;
-         paint paint-hires paint-hi-res
+         paint
+         paint-hi-res
+         paint-hires
          ;
          color->painter
          number->painter
