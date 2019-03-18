@@ -20,11 +20,10 @@ This package contains two collections.
 The @racket[sicp] collection contains a @tt{#lang sicp} language ideal
 for studying the book "Structure and Interpretation of Computer Programs"
 by Gerald Jay Sussman and Hal Abelson. The book is usually referred
-to simply as SICP.
+to simply as SICP. The non-standard primitives @scheme[cons-stream] is
+also provided.
 
 The second @racket[sicp-pict] collection contains the picture language used in SICP.
-The non-standard primitives @scheme[cons-stream] and @scheme[amb] are
-also provided.
 
 @section{Installation}
 Use DrRacket to install the sicp package like this:
@@ -67,7 +66,7 @@ The following functions of one variable are provided:
 There are no streams in R5RS, so the sicp language provides the
 primitives @racket[cons-stream] and @racket[stream-null?] that
 respectively constructs a stream and tests whether a stream is the null stream.
-The null-stream is provided as @racket[the-empty-stream].
+The null stream is provided as @racket[the-empty-stream].
 
 Finally the function @racket[runtime] is provided. It gives you the current
 time measured as the number of seconds passed since a fixed beginning.
