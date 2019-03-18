@@ -324,13 +324,13 @@ The following painter values are buitin:
 
 @section{Painting}
 
-The procedures paint and paint-hi-res takes a painter as input
+The procedures @scheme[paint] and @scheme[paint-hi-res] takes a painter as input
 and return a snip containing the painter's image. A snip is
-an image that DrScheme can display automatically.
+an image that DrRacket can display automatically.
 
-@defproc[(paint [p painter?]) snip?]{}
-@defproc[(paint-hi-res [p painter?]) snip?]{}
-
+@defproc[(paint [p painter?]) snip?]
+@deftogether[(@defproc[(paint-hi-res [p painter?]) snip?]
+              @defproc[(paint-hires [p painter?]) snip?])]
 
 @section{Authors}
 
