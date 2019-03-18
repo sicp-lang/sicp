@@ -144,15 +144,15 @@ From the REPL:
 A mathematical vector is called a @emph["vect"] here, in order
 to avoid confusion with the builtin vectors of Scheme.
 
-@defproc[(make-vect [x number?] [y number?]) vect?]{
+@defproc[(make-vect [x real?] [y real?]) vect?]{
 Constructs a vect with the given coordinates.
 }
 
-@defproc[(vector-xcor [v vect?]) number?]{
+@defproc[(vector-xcor [v vect?]) real?]{
 Returns the x-coordinate.
 }
 
-@defproc[(vector-ycor [v vect?]) number?]{
+@defproc[(vector-ycor [v vect?]) real?]{
 Returns the y-coordinate.
 }
 
@@ -164,7 +164,7 @@ Adds the two vects by adding their coordinates pairwise.
 Subtracts the two vects by subtracting their coordinates pairwise.
 }
 
-@defproc[(vector-scale [s number?] [v vect?]) vect?]{
+@defproc[(vector-scale [s real?] [v vect?]) vect?]{
 Scales the vect by multiplying each coordinate of @scheme{v} with 
 the number @scheme{s}.
 }
