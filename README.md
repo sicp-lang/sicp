@@ -1,6 +1,8 @@
 sicp
 ====
 
+[![Build Status](https://travis-ci.org/sicp-lang/sicp.png?branch=master)](https://travis-ci.org/sicp-lang/sicp)
+
 A SICP language for Racket.
 
 Ideal for studying the book "Structure and Interpretation of Computer Programs" 
