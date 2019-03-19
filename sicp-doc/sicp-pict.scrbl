@@ -4,8 +4,8 @@
           (for-label sicp-pict
                      racket/base
                      (only-in racket/contract
-                              any/c and/c or/c
-                              listof
+                              -> any/c and/c or/c
+                              listof contract?
                               <=/c natural-number/c)
                      (only-in racket/class is-a?/c)
                      (only-in racket/draw bitmap% color%)
@@ -159,9 +159,9 @@ A @emph{frame} is descibed by three vectors.
 
 @section{Segments}
 
-A pair of vectors determines a @emph{directed line segment} which
-runs from the endpoint of the first vect to the endpoint of the
-second vect.
+A pair of vects determines a @emph{directed line segment}
+(or simply a @emph{segment}) which runs from the endpoint of
+the first vect to the endpoint of the second vect.
 
 @defproc[(segment? [s any/c]) boolean?]{
   Returns @racket[#t] if @racket[s] is a segment, @racket[#f] otherwise.
@@ -185,24 +185,28 @@ Note that our implementation doesn't have a concept of @emph{picture}s, so
 doesn't exist in our implementation. If you wish to load an image file,
 use @racket[bitmap->painter].
 
-@defproc[(number->painter [color (and/c natural-number/c (<=/c 255))]) painter?]{
+@defthing[painter/c contract?]{
+A contract that recognizes a painter. This is the same as @racket[(-> frame? any/c)].
+}
+
+@defproc[(number->painter [color (and/c natural-number/c (<=/c 255))]) painter/c]{
 Constructs a painter that fills the frame with a gray color indicated
 by the number. 0 is black and 255 is white.
 }
 
-@defproc[(color->painter [color (is-a?/c color%)]) painter?]{
+@defproc[(color->painter [color (is-a?/c color%)]) painter/c]{
 Constructs a painter that fills the frame with the given color.
 }
 
-@defproc[(segments->painter [los (listof segment?)]) painter?]{
+@defproc[(segments->painter [los (listof segment?)]) painter/c]{
 Constructs a painter that draws a stick figure given by the
 segments (w.r.t. the unit square).}
 
-@defproc[(vects->painter [los (listof vect?)]) painter?]{
+@defproc[(vects->painter [los (listof vect?)]) painter/c]{
 Constructs a painter that draws a stick figure given by the
 vects (w.r.t. the unit square).}
 
-@defproc[(procedure->painter [f procedure?]) painter?]{
+@defproc[(procedure->painter [f procedure?]) painter/c]{
 
 Creates painters from procedures.  We assume that the procedure
 @racket[f] is defined on the unit square.
@@ -213,7 +217,7 @@ target, and find the value of @racket[f] at T-1(p).
 }
 
 @;{
-@defproc[(picture->painter [p picture?]) painter?]{
+@defproc[(picture->painter [p picture?]) painter/c]{
 The picture @racket[p] is defined on some frame.
 
 Given a point @racket[p] in the target frame, we compute T^-1(p) where T
@@ -224,9 +228,9 @@ integer point.
 }
 
 @deftogether[(@defproc[(bitmap->painter [bm (or/c path-string? (is-a?/c bitmap%))])
-                        painter?]
+                        painter/c]
               @defproc[(load-painter [bm (or/c path-string? (is-a?/c bitmap%))])
-                        painter?])]{
+                        painter/c])]{
 Uses an image given by @racket[bm] (either a path to the image or a bitmap object)
 to create a painter.}
 
@@ -234,35 +238,35 @@ to create a painter.}
 
 @defproc[(transform-painter [origin vect?]
                             [corner1 vect?]
-                            [corner2 vect?]) (painter? . -> . painter?)]{
+                            [corner2 vect?]) (painter/c . -> . painter/c)]{
 Returns a function that takes a painter as argument and returns
 a painter that is just like the original painter but is on
 the transformed frame characterized by @racket[origin], @racket[corner1],
 and @racket[corner2].
 }
 
-@defproc[(flip-horiz [p painter?]) painter?]{
+@defproc[(flip-horiz [p painter/c]) painter/c]{
 Returns a painter that flips the image horizontally.}
 
-@defproc[(flip-vert [p painter?]) painter?]{
+@defproc[(flip-vert [p painter/c]) painter/c]{
 Returns a painter that flips the image vertically.}
 
-@deftogether[(@defproc[(rotate90 [p painter?]) painter?]
-              @defproc[(rotate180 [p painter?]) painter?]
-              @defproc[(rotate270 [p painter?]) painter?])]{
+@deftogether[(@defproc[(rotate90 [p painter/c]) painter/c]
+              @defproc[(rotate180 [p painter/c]) painter/c]
+              @defproc[(rotate270 [p painter/c]) painter/c])]{
 Returns a painter that rotates the image.}
 
-@defproc[(beside [p1 painter?] [p2 painter?]) painter?]{
+@defproc[(beside [p1 painter/c] [p2 painter/c]) painter/c]{
 Constructs a painter that paints the images side-by-side.}
 
-@defproc[(below [p1 painter?] [p2 painter?]) painter?]{
+@defproc[(below [p1 painter/c] [p2 painter/c]) painter/c]{
 Constructs a painter that paints the second image
 below the first.}
 
-@defproc[(above3 [p1 painter?] [p2 painter?] [p3 painter?]) painter?]{
+@defproc[(above3 [p1 painter/c] [p2 painter/c] [p3 painter/c]) painter/c]{
 Constructs a painter that paints the images one above the other.}
 
-@defproc[(superpose [p1 painter?] [p2 painter?]) painter?]{
+@defproc[(superpose [p1 painter/c] [p2 painter/c]) painter/c]{
 Constructs a painter that paints the two images
 on top of each other.}
 
@@ -270,23 +274,23 @@ on top of each other.}
 
 The following painter values are built-in:
 
-@deftogether[(@defthing[black painter?]
-              @defthing[white painter?]
-              @defthing[gray painter?])]{
+@deftogether[(@defthing[black painter/c]
+              @defthing[white painter/c]
+              @defthing[gray painter/c])]{
   Fills the frame with black (0), white (255) or gray (150).
 }
 
-@defthing[diagonal-shading painter?]{
+@defthing[diagonal-shading painter/c]{
   Fills the frame with a shades of gray. The color transition
   goes from black in the upper left corner is black, to gray
   in the bottom right corner.
 }
 
-@defthing[mark-of-zorro painter?]{
+@defthing[mark-of-zorro painter/c]{
   Draws the Mark of Zorro.
 }
 
-@defthing[einstein painter?]{
+@defthing[einstein painter/c]{
   Draws an image of Einstein.
 }
 
@@ -294,11 +298,11 @@ The following painter values are built-in:
 
 Painting turns a painter into an @emph{image snip} which can be displayed in DrRacket automatically.
 
-@defproc[(paint [p painter?]) (is-a?/c image-snip%)]{
+@defproc[(paint [p painter/c]) (is-a?/c image-snip%)]{
   Returns an image snip that contains the painter's image.
 }
 
-@deftogether[(@defproc[(paint-hi-res [p painter?]) (is-a?/c image-snip%)]
-              @defproc[(paint-hires [p painter?]) (is-a?/c image-snip%)])]{
+@deftogether[(@defproc[(paint-hi-res [p painter/c]) (is-a?/c image-snip%)]
+              @defproc[(paint-hires [p painter/c]) (is-a?/c image-snip%)])]{
   The same as @racket[paint]. They are provided for compatibility with old texts.
 }

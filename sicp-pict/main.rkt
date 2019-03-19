@@ -247,6 +247,8 @@
 (define current-bm (make-parameter #f))
 (define current-dc (make-parameter #f))
 
+(define painter/c (-> frame? any/c))
+
 ; To get a painting from a painter, we need to create a new
 ; bitmap into which the painter can draw.
 (define (paint painter)
@@ -356,7 +358,9 @@
 ;;; Primitive Painters
 ;;;
 
-(provide with-transformation
+(provide painter/c
+         ;
+         with-transformation
          with-frame
          with-pen
          with-brush
