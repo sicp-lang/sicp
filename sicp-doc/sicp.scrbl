@@ -44,11 +44,11 @@ then use @racket[#%require].
   Returns @racket[x].
 }
 
-@defproc[(inc [x real?]) real?]{
+@defproc[(inc [x number?]) number?]{
   Returns @racket[(+ x 1)].
 }
 
-@defproc[(dec [x real?]) real?]{
+@defproc[(dec [x number?]) number?]{
   Returns @racket[(- x 1)].
 }
 
@@ -67,4 +67,10 @@ then use @racket[#%require].
 
 @defproc[(runtime) natural-number/c]{
   Returns the current time measured as the number of seconds passed since a fixed beginning.
+}
+
+@defproc[(random [n positive?]) real?]{
+  Returns an random integer between 0 and n-1 (inclusive) if @racket[n] is
+  an exact integer, otherwise returns a random inexact number between 0 and n
+  (exclusive).
 }
