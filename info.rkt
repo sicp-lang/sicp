@@ -15,3 +15,5 @@
                      "mzscheme"
                      "scribble-lib"
                      "racket-doc"))
+(define compile-omit-paths '("sicp-pict-old"))
+(define test-omit-paths '("sicp-pict-old"))
