@@ -1,7 +1,7 @@
 sicp
 ====
 
-[![Build Status](https://travis-ci.org/sicp-lang/sicp.png?branch=master)](https://travis-ci.org/sicp-lang/sicp)
+[![Build Status](https://travis-ci.com/sicp-lang/sicp.png?branch=master)](https://travis-ci.com/sicp-lang/sicp)
 
 A SICP language for Racket.
 
