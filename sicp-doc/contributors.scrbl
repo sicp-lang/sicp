@@ -16,6 +16,7 @@ The following individuals contributed to the implementation and documentation of
   @item{Ed Moore fixes a missing function.}
   @item{Chuan Wei Foo improves the README file.}
   @item{Graeme McCutcheon fixes a typo.}
+  @item{Huma Zafar updates the documentation to match the new picture language implementation.}
   @item{Sorawee Porncharoenwase is a current maintainer of the package.}
   @item{Jens Axel Søgaard is a current maintainer of the package,
         implementing the picture language and maintaining the package for years.}
