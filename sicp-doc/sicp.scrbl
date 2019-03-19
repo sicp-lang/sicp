@@ -8,8 +8,8 @@
 @title{SICP Language}
 @defmodule[sicp #:lang]
 
-@index["SICP"]{}
-@index["sicp"]{}
+@index["SICP"]
+@index["sicp"]
 
 @section{Introduction}
 

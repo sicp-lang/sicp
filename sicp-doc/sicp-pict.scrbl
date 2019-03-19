@@ -2,16 +2,18 @@
 
 @(require scribble/manual scribble/eval
           (for-label sicp-pict
+                     racket/base
                      (only-in racket/contract any/c and/c <=/c natural-number/c)
-                     racket/base))
+                     (only-in racket/class is-a?/c)
+                     (only-in racket/draw bitmap%)))
 
 @title{SICP Picture Language}
 @defmodule[sicp-pict]
 
-@index["painter"]{}
-@index["geometry"]{}
-@index["picture"]{}
-@index["Escher"]{}
+@index["painter"]
+@index["geometry"]
+@index["picture"]
+@index["Escher"]
 
 @section{Introduction to the SICP Picture Language}
 
@@ -174,18 +176,17 @@ second vect.
 
 Painters take a frame and draw an image, transformed to fit inside the frame.
 
-There are four ways to create painters:
-@itemize[@item{from a constant:               @scheme[number->painter]}
-         @item{from a list of line segments:  @scheme[segments->painter]}
-         @item{form a procedure:              @scheme[procedure->painter]}
-         @item{from a picture:                @scheme[picture->painter]}]
+Note that our implementation doesn't have a concept of @emph{picture}s, so
+@racket[picture->painter] which is commonly found in other implementations
+doesn't exist in our implementation. If you wish to load an image file,
+use @racket[bitmap->painter].
 
 @defproc[(number->painter [color (and/c natural-number/c (<=/c 255))]) painter?]{
 Constructs a painter that fills the frame with a gray color indicated
 by the number. 0 is black and 255 is white.
 }
 
-@defproc[(segments->painter [los list-of-segment?]) painter?]{
+@defproc[(segments->painter [los list?]) painter?]{
 Constructs a painter that draws a stick figure given by the
 segments (w.r.t. the unit square).}
 
@@ -200,6 +201,7 @@ T^-1(p) of p under the transformation that maps the unit square to the
 target, and find the value of @racket[f] at T-1(p).
 }
 
+@;{
 @defproc[(picture->painter [p picture?]) painter?]{
 The picture @racket[p] is defined on some frame.
 
@@ -208,9 +210,14 @@ is the transformation that takes the picture frame to the
 target frame, and find the picture value at the closest
 integer point.
 }
+}
 
-@defproc[(load-painter [filename path?]) painter?]{
-Uses the image file given by @racket[filename] to create a painter.}
+@deftogether[(@defproc[(bitmap->painter [bm (or/c path-string? (is-a?/c bitmap%))])
+                        painter?]
+              @defproc[(load-painter [bm (or/c path-string? (is-a?/c bitmap%))])
+                        painter?])]{
+Uses an image given by @racket[bm] (either a path to the image or a bitmap object)
+to create a painter.}
 
 @section{Higher Order Painters}
 
@@ -247,7 +254,7 @@ below the first.}
 Constructs a painter that paints the two images
 on top of each other.}
 
-@section{Simple Builtin Painters}
+@section{Simple Built-In Painters}
 
 The following painter values are built-in:
 
@@ -261,6 +268,10 @@ The following painter values are built-in:
   Fills the frame with a shades of gray. The color transition
   goes from black in the upper left corner is black, to gray
   in the bottom right corner.
+}
+
+@defthing[mark-of-zorro painter?]{
+  Draws the Mark of Zorro.
 }
 
 @defthing[einstein painter?]{

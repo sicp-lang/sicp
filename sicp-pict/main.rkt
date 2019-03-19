@@ -366,11 +366,14 @@
          paint-hires
          ;
          color->painter
-         number->painter
-         segments->painter
          vects->painter
-         bitmap->painter
-         procedure->painter)
+         (contract-out [number->painter (-> (and/c natural-number/c (<=/c 255)) any/c)]
+                       [segments->painter (-> list? any/c)]
+                       [procedure->painter (-> procedure? any/c)]
+                       [bitmap->painter (-> (or/c path-string?
+                                                  (is-a?/c bitmap%)) any/c)]
+                       [load-painter (-> (or/c path-string?
+                                               (is-a?/c bitmap%)) any/c)]))
 
 ;;; Color Painter
 ;;;     A color painter fills the unit square with a solid color
@@ -414,7 +417,7 @@
 ;;; Bitmap Painter
 ;;;     A bitmap painter draws a bitmap.
 (define (bitmap->painter bitmap)
-  (define (new-bm) (if (or (string? bitmap) (path? bitmap))
+  (define (new-bm) (if (path-string? bitmap)
                        (make-object bitmap% bitmap)
                        bitmap))
   (define bm         (new-bm))
@@ -434,6 +437,8 @@
             0. 0.      ; src-x src-y
             w  h       ; src-width src-height
             ))))
+
+(define load-painter bitmap->painter)
 
 ;;; Procedure Painter
 (define (procedure->painter f [size 100])
