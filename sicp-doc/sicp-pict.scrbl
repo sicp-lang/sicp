@@ -298,11 +298,20 @@ The following painter values are built-in:
 
 Painting turns a painter into an @emph{image snip} which can be displayed in DrRacket automatically.
 
-@defproc[(paint [p painter/c]) (is-a?/c image-snip%)]{
+@defproc[(paint [p painter/c]
+                [#:width width (and/c positive? integer?) 200]
+                [#:height height (and/c positive? integer?) 200])
+         (is-a?/c image-snip%)]{
   Returns an image snip that contains the painter's image.
 }
 
-@deftogether[(@defproc[(paint-hi-res [p painter/c]) (is-a?/c image-snip%)]
-              @defproc[(paint-hires [p painter/c]) (is-a?/c image-snip%)])]{
-  The same as @racket[paint]. They are provided for compatibility with old texts.
+@deftogether[(@defproc[(paint-hi-res [p painter/c]
+                                     [#:width width (and/c positive? integer?) 200]
+                                     [#:height height (and/c positive? integer?) 200])
+                       (is-a?/c image-snip%)]
+              @defproc[(paint-hires [p painter/c]
+                                    [#:width width (and/c positive? integer?) 200]
+                                    [#:height height (and/c positive? integer?) 200])
+                       (is-a?/c image-snip%)])]{
+  Aliases of @racket[paint]. They are provided for compatibility with old texts.
 }

@@ -251,8 +251,8 @@
 
 ; To get a painting from a painter, we need to create a new
 ; bitmap into which the painter can draw.
-(define (paint painter)
-  (define-values (bm dc) (make-painter-bitmap 200 200))
+(define (paint painter #:width [width 200] #:height [height 200])
+  (define-values (bm dc) (make-painter-bitmap width height))
   (parameterize ([current-bm bm]
                  [current-dc dc])
     (send dc scale 0.99 0.99) ; make the entire unit square visible
