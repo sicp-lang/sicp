@@ -1,3 +1,3 @@
 #lang info
 
-(define scribblings '(("sicp-manual.scrbl")))
+(define scribblings '(("sicp-manual.scrbl" (multi-page))))
