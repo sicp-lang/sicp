@@ -19,7 +19,7 @@
 @index["picture"]
 @index["Escher"]
 
-@section{Introduction}
+@section[#:tag "sicp-pict-intro"]{Introduction}
 
 The SICP Picture Language is a small language for drawing pictures.
 It shows the power of data abstraction and closure. The picture language

@@ -11,7 +11,7 @@
 @index["SICP"]
 @index["sicp"]
 
-@section{Introduction}
+@section[#:tag "sicp-intro"]{Introduction}
 
 The programs in the book are written in (a subset of) the programming language Scheme.
 As the years have passed the programming language Scheme has evolved.
