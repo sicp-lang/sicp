@@ -3,9 +3,13 @@
 @(require scribble/manual scribble/eval
           (for-label sicp-pict
                      racket/base
-                     (only-in racket/contract any/c and/c <=/c natural-number/c)
+                     (only-in racket/contract
+                              any/c and/c or/c
+                              listof
+                              <=/c natural-number/c)
                      (only-in racket/class is-a?/c)
-                     (only-in racket/draw bitmap%)))
+                     (only-in racket/draw bitmap% color%)
+                     (only-in racket/snip image-snip%)))
 
 @title{SICP Picture Language}
 @defmodule[sicp-pict]
@@ -186,10 +190,17 @@ Constructs a painter that fills the frame with a gray color indicated
 by the number. 0 is black and 255 is white.
 }
 
-@defproc[(segments->painter [los list?]) painter?]{
+@defproc[(color->painter [color (is-a?/c color%)]) painter?]{
+Constructs a painter that fills the frame with the given color.
+}
+
+@defproc[(segments->painter [los (listof segment?)]) painter?]{
 Constructs a painter that draws a stick figure given by the
 segments (w.r.t. the unit square).}
 
+@defproc[(vects->painter [los (listof vect?)]) painter?]{
+Constructs a painter that draws a stick figure given by the
+vects (w.r.t. the unit square).}
 
 @defproc[(procedure->painter [f procedure?]) painter?]{
 
@@ -224,12 +235,10 @@ to create a painter.}
 @defproc[(transform-painter [origin vect?]
                             [corner1 vect?]
                             [corner2 vect?]) (painter? . -> . painter?)]{
-A painter can be transformed to produce a new painter which, when
-given a frame, calls the original painter on the transformed frame.
-
-Transform-painter will given an origin and two corners, return
-a function that takes a painter as argument and returns
-a transformed painter.
+Returns a function that takes a painter as argument and returns
+a painter that is just like the original painter but is on
+the transformed frame characterized by @racket[origin], @racket[corner1],
+and @racket[corner2].
 }
 
 @defproc[(flip-horiz [p painter?]) painter?]{
@@ -249,6 +258,9 @@ Constructs a painter that paints the images side-by-side.}
 @defproc[(below [p1 painter?] [p2 painter?]) painter?]{
 Constructs a painter that paints the second image
 below the first.}
+
+@defproc[(above3 [p1 painter?] [p2 painter?] [p3 painter?]) painter?]{
+Constructs a painter that paints the images one above the other.}
 
 @defproc[(superpose [p1 painter?] [p2 painter?]) painter?]{
 Constructs a painter that paints the two images
@@ -280,11 +292,13 @@ The following painter values are built-in:
 
 @section{Painting}
 
-@defproc[(paint [p painter?]) snip?]{
-  Returns a snip, an image that DrRacket can display automatically, containing the painter's image.
+Painting turns a painter into an @emph{image snip} which can be displayed in DrRacket automatically.
+
+@defproc[(paint [p painter?]) (is-a?/c image-snip%)]{
+  Returns an image snip that contains the painter's image.
 }
 
-@deftogether[(@defproc[(paint-hi-res [p painter?]) snip?]
-              @defproc[(paint-hires [p painter?]) snip?])]{
+@deftogether[(@defproc[(paint-hi-res [p painter?]) (is-a?/c image-snip%)]
+              @defproc[(paint-hires [p painter?]) (is-a?/c image-snip%)])]{
   The same as @racket[paint]. They are provided for compatibility with old texts.
 }
