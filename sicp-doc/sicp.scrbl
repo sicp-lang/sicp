@@ -74,3 +74,7 @@ then use @racket[#%require].
   an exact integer, otherwise returns a random inexact number between 0 and n
   (exclusive).
 }
+
+@defform[(amb expr ...)]{
+  The amb operator.
+}

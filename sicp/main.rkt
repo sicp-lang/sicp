@@ -1,56 +1,68 @@
-#lang r5rs
+#lang racket
 
-(#%require (only racket/base
-                 current-inexact-milliseconds
-                 current-print
-                 flush-output
-                 make-parameter
-                 error
-                 void?)
-           (rename racket/base racket:module-begin #%module-begin))
+(require (only-in racket/base
+                  current-inexact-milliseconds
+                  current-print
+                  flush-output
+                  make-parameter
+                  error
+                  void?)
+         racket/provide
+         (prefix-in r5rs: r5rs)
+         (rename-in racket [random racket:random]))
 
-(#%provide (all-from-except r5rs #%module-begin)
-           (rename racket:module-begin #%module-begin))
+(provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
+                       (except-out (all-from-out r5rs) r5rs:#%module-begin))
+         #%module-begin)
 
-(#%provide true)
-(define true #t)
+(define-syntax (define+provide stx)
+  (syntax-case stx ()
+    [(_ (id . args) . body) #'(begin
+                                (provide id)
+                                (define (id . args) . body))]
+    [(_ id expr) #'(begin
+                     (provide id)
+                     (define id expr))]))
 
-(#%provide false)
-(define false #f)
-
-(#%provide nil)
-(define nil '())
-
-(#%provide identity)
-(define (identity x) x)
-
-(#%provide inc)
-(define (inc x) (+ x 1))
-
-(#%provide dec)
-(define (dec x) (- x 1))
-
-(#%provide runtime)
-(define (runtime)
+(define+provide true #t)
+(define+provide false #f)
+(define+provide nil '())
+(define+provide the-empty-stream '())
+(define+provide stream-null? null?)
+(define+provide (identity x) x)
+(define+provide (inc x) (+ x 1))
+(define+provide (dec x) (- x 1))
+(define+provide (runtime)
   (inexact->exact (truncate (* 1000 (current-inexact-milliseconds)))))
+(define+provide (random n)
+  (if (and (integer? n) (exact? n))
+      (racket:random n)
+      (* n (racket:random))))
 
-(#%provide cons-stream)
+(provide cons-stream)
 (define-syntax cons-stream
   (syntax-rules ()
     ((_ A B) (cons A (delay B)))))
 
-(#%provide the-empty-stream)
-(define the-empty-stream '())
+(provide error)
 
-(#%provide stream-null?)
-(define (stream-null? x) (null? x))
+(provide amb)
 
-(#%provide error)
+(define (amb-fail) (error "amb tree exhausted"))
+(define (set-amb-fail! x) (set! amb-fail x))
 
+(define-syntax-rule (explore +prev-amb-fail +sk alt)
+  (call/cc
+   (lambda (+fk)
+     (set-amb-fail!
+      (thunk
+       (set-amb-fail! +prev-amb-fail)
+       (+fk 'fail)))
+     (+sk alt))))
 
-(#%provide (rename sicp-random random))
-(#%require (only racket random))
-(define (sicp-random n)
-  (if (and (integer? n) (exact? n))
-      (random n)
-      (* n (random))))
+(define-syntax-rule (amb alt ...)
+  (let ([+prev-amb-fail amb-fail])
+    (call/cc
+     (lambda (+sk)
+       (explore +prev-amb-fail +sk alt) ...
+       (+prev-amb-fail)))))
