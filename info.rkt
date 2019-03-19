@@ -2,7 +2,8 @@
 
 (define collection 'multi)
 (define version    "1")
-(define deps '("draw-lib"
+(define deps '("rackunit-lib"
+               "draw-lib"
                "snip-lib"
                "mzscheme"
                "base"

@@ -7,3 +7,5 @@
                   [(= x 0) (amb)]
                   [(= x 1) -1]
                   [else -2])) -1)
+
+(check-equal? (amb (amb) 42 1337) 42)
