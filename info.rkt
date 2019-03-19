@@ -10,7 +10,9 @@
                "gui-lib"
                "scheme-lib"
                "r5rs-lib"))
-(define build-deps '("r5rs-doc"
+(define build-deps '("draw-doc"
+                     "gui-doc"
+                     "r5rs-doc"
                      "at-exp-lib"
                      "mzscheme"
                      "scribble-lib"
