@@ -11,6 +11,9 @@
                      (only-in racket/draw bitmap% color%)
                      (only-in racket/snip image-snip%)))
 
+@(define the-eval (make-base-eval))
+@(the-eval '(require sicp-pict))
+
 @title{SICP Picture Language}
 @defmodule[sicp-pict]
 
@@ -105,6 +108,10 @@ Scales the vect by multiplying each coordinate of @racket[v] with
 the number @racket[s].
 }
 
+@defthing[zero-vector vect?]{
+The same as @racket[(make-vect 0. 0.)]
+}
+
 @section{Frames}
 
 A @emph{frame} is descibed by three vectors.
@@ -174,6 +181,15 @@ the first vect to the endpoint of the second vect.
 @deftogether[(@defproc[(segment-start [s segment?]) vect?]
               @defproc[(segment-end [s segment?]) vect?])]{
   Returns the start and the end of a segment @racket[s] respectively.
+}
+
+@defproc[(vects->segments [lov (listof vect?)]) (listof segment?)]{
+  Partitions consecutive vect in @racket[lov] into chunks of size 2 and
+  returns a list of segments where each segment is constructed by each chunk.
+  If @racket[lov]'s length is odd, the last element will be discarded.
+
+  @examples[#:eval the-eval
+  (vects->segments (list (make-vect 1 2) (make-vect 3 4) (make-vect 5 6) (make-vect 7 8)))]
 }
 
 @section{Primitive Painters}
@@ -294,6 +310,10 @@ The following painter values are built-in:
   Draws an image of Einstein.
 }
 
+@defproc[(escher) painter/c]{
+  Draws Escher's @link["https://www.wikiart.org/en/m-c-escher/square-limit"]{Square Limit}.
+}
+
 @section{Painting}
 
 Painting turns a painter into an @emph{image snip} which can be displayed in DrRacket automatically.
@@ -302,7 +322,8 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
                 [#:width width (and/c positive? integer?) 200]
                 [#:height height (and/c positive? integer?) 200])
          (is-a?/c image-snip%)]{
-  Returns an image snip that contains the painter's image.
+  Returns an image snip that contains the painter's image with
+  the specified @racket[width] and @racket[height].
 }
 
 @deftogether[(@defproc[(paint-hi-res [p painter/c]

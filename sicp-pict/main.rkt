@@ -369,10 +369,11 @@
          paint-hi-res
          paint-hires
          ;
-         color->painter
-         vects->painter
+
          (contract-out [number->painter (-> (and/c natural-number/c (<=/c 255)) any/c)]
+                       [color->painter (-> (is-a?/c color%) painter/c)]
                        [segments->painter (-> list? any/c)]
+                       [vects->painter (-> (listof vect?) painter/c)]
                        [procedure->painter (-> procedure? any/c)]
                        [bitmap->painter (-> (or/c path-string?
                                                   (is-a?/c bitmap%)) any/c)]
@@ -522,7 +523,7 @@
 ;;;
 ;;; Predefined Basic Painters
 ;;;
-(provide black white gray diagonal-shading mark-of-zorro einstein)
+(provide black white gray diagonal-shading mark-of-zorro einstein escher)
 (provide echo)
 
 (define black            (number->painter   0))
