@@ -4,15 +4,18 @@
 
 @title{Contributors}
 
-Abelson & Sussman:
-@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"]{Structure and Interpretation of Computer Programs}.
+The following individuals contributed to the implementation and documentation of SICP language:
 
-Daniel Coore: Original MIT Scheme code.
-
-Mike Sperber: PLT port.
-
-Jens Axel Søgaard: Documentation.
-
-Javier Olaechea: Fixed amb.
-
-Neil Van Dyke: The SICP language. Maintained the sicp package for years.
+@itemlist[
+  @item{Abelson & Sussman wrote @link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"]{Structure and Interpretation of Computer Programs}.}
+  @item{Daniel Coore designed and implemented the original image display code in MIT Scheme.}
+  @item{Mike Sperber ported the code to PLT Scheme / Racket.}
+  @item{Neil Van Dyke maintained the original SICP language package for years.}
+  @item{Javier Olaechea fixes bugs in amb.}
+  @item{Leif Andersen fixes several packaging configuration mistakes.}
+  @item{Ed Moore fixes a missing function.}
+  @item{Chuan Wei Foo improves the README file.}
+  @item{Sorawee Porncharoenwase is a current maintainer of the package.}
+  @item{Jens Axel Søgaard is a current maintainer of the package,
+        implementing the picture language and maintaining the package for years.}
+]
