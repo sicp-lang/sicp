@@ -1,0 +1,34 @@
+language: c
+
+env:
+  global:
+    - RACKET_DIR=~/racket
+  matrix:
+    - RACKET_VERSION=6.3
+    - RACKET_VERSION=6.6
+    - RACKET_VERSION=6.9
+    - RACKET_VERSION=6.12
+    - RACKET_VERSION=7.0
+    - RACKET_VERSION=7.1
+    - RACKET_VERSION=7.2
+    - RACKET_VERSION=HEAD
+    - RACKET_VERSION=HEADCS
+
+matrix:
+  allow_failures:
+    - env: RACKET_VERSION=HEAD
+    - env: RACKET_VERSION=HEADCS
+  fast_finish: true
+
+
+before_install:
+  - git clone https://github.com/greghendershott/travis-racket.git
+  - cat travis-racket/install-racket.sh | bash
+  - export PATH="${RACKET_DIR}/bin:${PATH}"
+
+install:
+  - raco pkg install --auto
+
+script:
+  - raco setup --check-pkg-deps sicp
+  - raco test -p sicp

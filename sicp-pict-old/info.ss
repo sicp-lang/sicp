@@ -5,7 +5,7 @@
 (define primary-file "sicp.ss")
 ; (define doc.txt "doc.txt")
 (define categories '(media))
-(define scribblings '(("sicp-manual.scrbl" ())))
+;; (define scribblings '(("sicp-manual.scrbl" ())))
 (define repositories '("4.x"))
 (define release-notes '("Fixed orientation related bug (aka the rotate90 bug)."))
 
