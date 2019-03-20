@@ -7,8 +7,7 @@
 ; This is a new implementation of the SICP Picture Language.
 ; The picture language is inspired by Henderson's work.
 
-(require (for-syntax syntax/parse)
-         racket/draw
+(require racket/draw
          racket/snip
          (only-in mzlib/etc this-expression-source-directory))
 

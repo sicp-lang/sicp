@@ -109,7 +109,7 @@ the number @racket[s].
 }
 
 @defthing[zero-vector vect?]{
-The same as @racket[(make-vect 0. 0.)]
+An alias for @racket[(make-vect 0. 0.)]
 }
 
 @section{Frames}

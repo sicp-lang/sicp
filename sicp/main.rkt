@@ -1,13 +1,6 @@
 #lang racket
 
-(require (only-in racket/base
-                  current-inexact-milliseconds
-                  current-print
-                  flush-output
-                  make-parameter
-                  error
-                  void?)
-         racket/provide
+(require racket/provide
          (prefix-in r5rs: r5rs)
          (rename-in racket [random racket:random]))
 
@@ -24,12 +17,13 @@
                      (provide id)
                      (define id expr))]))
 
-(define+provide true #t)
-(define+provide false #f)
+(provide true)
+(provide false)
+(provide error)
+(provide identity)
 (define+provide nil '())
 (define+provide the-empty-stream '())
 (define+provide stream-null? null?)
-(define+provide (identity x) x)
 (define+provide (inc x) (+ x 1))
 (define+provide (dec x) (- x 1))
 (define+provide (runtime)
@@ -42,9 +36,8 @@
 (provide cons-stream)
 (define-syntax cons-stream
   (syntax-rules ()
-    ((_ A B) (cons A (delay B)))))
+    [(_ A B) (cons A (delay B))]))
 
-(provide error)
 
 (provide amb)
 

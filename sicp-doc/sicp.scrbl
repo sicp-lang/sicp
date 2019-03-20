@@ -1,9 +1,9 @@
 #lang scribble/doc
 
 @(require scribble/manual scribble/eval
-          (for-label (except-in sicp #%app #%datum #%top)
-                     (only-in racket/base require)
-                     (only-in racket/contract natural-number/c any/c)))
+          (for-label (except-in sicp #%app #%datum #%top true false identity error)
+                     (only-in racket require true false identity error
+                                     natural-number/c any/c)))
 
 @title{SICP Language}
 @defmodule[sicp #:lang]
@@ -28,20 +28,8 @@ then use @racket[#%require].
 
 @section{Built-In}
 
-@defthing[true boolean?]{
-  The same as @racket[#t].
-}
-
-@defthing[false boolean?]{
-  The same as @racket[#f].
-}
-
 @defthing[nil null?]{
-  The same as @racket['()].
-}
-
-@defproc[(identity [x any/c]) any/c]{
-  Returns @racket[x].
+  An alias for @racket['()].
 }
 
 @defproc[(inc [x number?]) number?]{
@@ -78,3 +66,5 @@ then use @racket[#%require].
 @defform[(amb expr ...)]{
   The amb operator.
 }
+
+Additionally, @racket[true], @racket[false], @racket[identity], and @racket[error] are provided from Racket.
