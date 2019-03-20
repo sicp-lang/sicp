@@ -2,7 +2,7 @@
 
 (define collection 'multi)
 (define version    "1")
-(define test-omit-paths '("sicp-doc"))
+(define test-omit-paths '(#px"^((?!/test/).)*$"))
 (define deps '("base"
                "draw-lib"
                "r5rs-lib"
