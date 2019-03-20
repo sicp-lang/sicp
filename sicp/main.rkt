@@ -6,7 +6,7 @@
 
 (provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
                        (except-out (all-from-out r5rs) r5rs:#%module-begin))
-         #%module-begin)
+         (rename-out [module-begin #%module-begin]))
 
 (define-syntax (define+provide stx)
   (syntax-case stx ()
@@ -59,3 +59,13 @@
      (lambda (+sk)
        (explore +prev-amb-fail +sk alt) ...
        (+prev-amb-fail)))))
+
+(define-syntax module-begin
+  (syntax-rules ()
+    ((_ . forms)
+     (#%printing-module-begin
+      (module configure-runtime '#%kernel
+        (print-as-expression #f)
+        (print-pair-curly-braces  #t)
+        (print-mpair-curly-braces #f))
+      . forms))))
