@@ -10,7 +10,9 @@
 (require (for-syntax syntax/parse)
          racket/draw
          racket/snip
-         (only-in mzlib/etc this-expression-source-directory))
+         racket/runtime-path)
+
+(define-runtime-path einstein-file "einstein2.jpg")
 
 ;;;
 ;;; Vectors
@@ -531,8 +533,7 @@
 (define gray             (number->painter 150))
 (define diagonal-shading (procedure->painter (λ (x y) (* 100 (+ x y)))))
 (define mark-of-zorro    (vects->painter (list (vect .1 .9) (vect .8 .9) (vect .1 .2) (vect .9 .3))))
-(define einstein         (bitmap->painter (build-path (this-expression-source-directory)
-                                                      "einstein2.jpg")))
+(define einstein         (bitmap->painter einstein-file))
 
 ;;; Escher Example
 
