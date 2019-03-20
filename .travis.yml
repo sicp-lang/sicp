@@ -30,5 +30,5 @@ install:
   - raco pkg install --auto
 
 script:
-  - raco setup --check-pkg-deps sicp
+  - raco setup --check-pkg-deps --pkgs sicp
   - raco test -p sicp

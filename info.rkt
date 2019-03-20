@@ -8,4 +8,8 @@
                "r5rs-lib"
                "rackunit-lib"
                "snip-lib"))
-(define build-deps '("scribble-lib"))
+(define build-deps '("draw-doc"
+                     "gui-doc"
+                     "r5rs-doc"
+                     "racket-doc"
+                     "scribble-lib"))
