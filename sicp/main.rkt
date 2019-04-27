@@ -36,7 +36,7 @@
 (provide cons-stream)
 (define-syntax cons-stream
   (syntax-rules ()
-    [(_ A B) (cons A (delay B))]))
+    [(_ A B) (r5rs:cons A (r5rs:delay B))]))
 
 
 (provide amb)
