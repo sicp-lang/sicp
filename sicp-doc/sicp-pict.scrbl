@@ -183,7 +183,7 @@ the first vect to the endpoint of the second vect.
   Returns the start and the end of a segment @racket[s] respectively.
 }
 
-@defproc[(vects->segments [lov (listof vect?)]) (listof segment?)]{
+@defproc[(vects->segments [lov (sequence/c vect?)]) (listof segment?)]{
   Partitions consecutive vect in @racket[lov] into chunks of size 2 and
   returns a list of segments where each segment is constructed by each chunk.
   If @racket[lov]'s length is odd, the last element will be discarded.
@@ -214,11 +214,11 @@ by the number. 0 is black and 255 is white.
 Constructs a painter that fills the frame with the given color.
 }
 
-@defproc[(segments->painter [los (listof segment?)]) painter/c]{
+@defproc[(segments->painter [los (sequence/c segment?)]) painter/c]{
 Constructs a painter that draws a stick figure given by the
 segments (w.r.t. the unit square).}
 
-@defproc[(vects->painter [los (listof vect?)]) painter/c]{
+@defproc[(vects->painter [los (sequence/c vect?)]) painter/c]{
 Constructs a painter that draws a stick figure given by the
 vects (w.r.t. the unit square).}
 

@@ -145,7 +145,7 @@
 
 (provide (contract-out
           [struct segment ([start vect?] [end vect?])]
-          [vects->segments (-> (listof vect?) (listof segment?))]))
+          [vects->segments (-> (sequence/c vect?) (listof segment?))]))
 
 ; A segment represents a line segment from start point to end point.
 ; The start and end points are represented as vects.
@@ -154,15 +154,10 @@
   #:extra-constructor-name make-segment
   #:transparent)
 
-; vects->segments : list-of-vect -> list-of-segment
+; vects->segments : sequence-of-vect -> list-of-segment
 (define (vects->segments vects)
-  (match vects
-    [(list v w more ...)
-     (cons (segment v w)
-           (vects->segments (cons w more)))]
-    [(list v) '()]
-    [(list)   '()]
-    [else (raise-type-error 'vects->segments "expected a list of vects" vects)]))
+  (for/list ([v vects] [w (sequence-tail vects 1)])
+    (segment v w)))
 
 ;;;
 ;;; COLORS, PENS, AND, BRUSHES
@@ -374,8 +369,8 @@
 
          (contract-out [number->painter (-> (and/c natural-number/c (<=/c 255)) any/c)]
                        [color->painter (-> (is-a?/c color%) painter/c)]
-                       [segments->painter (-> list? any/c)]
-                       [vects->painter (-> (listof vect?) painter/c)]
+                       [segments->painter (-> (sequence/c segment?) any/c)]
+                       [vects->painter (-> (sequence/c vect?) painter/c)]
                        [procedure->painter (-> procedure? any/c)]
                        [bitmap->painter (-> (or/c path-string?
                                                   (is-a?/c bitmap%)) any/c)]
@@ -414,7 +409,7 @@
     (with-frame frame
       (with-pen pen
         (with-brush brush
-          (for ([a-segment (in-list segments)])            
+          (for ([a-segment segments])
             (match-define (segment (vect x1 y1) (vect x2 y2)) a-segment)
             (send dc draw-line x1 y1 x2 y2)))))))
 
