@@ -319,10 +319,13 @@
 ;   is given by the transformation corresponding to frame.
 (define-syntax (with-frame stx)
   (syntax-parse stx
-    [(_with-frame frame body ...)
+    [(_with-frame frame #:who who body ...)
      (syntax/loc stx
-       (with-transformation (frame->transformation frame)
-         body ...))]))
+       (begin
+         (unless (current-dc)
+           (raise-arguments-error 'who "should be called with the paint procedure without supplying a manual frame argument"))
+         (with-transformation (frame->transformation frame)
+           body ...)))]))
 
 ; SYNTAX  (with-pen pen body ...)
 ;   Evaluate body ... while pen is installed in the drawing context given by current-dc
@@ -384,7 +387,7 @@
   (define pen   (new-pen color))
   (define brush (new-brush color))
   (λ (frame)
-    (with-frame frame
+    (with-frame frame #:who color->painter
       (with-pen pen
         (with-brush brush
           (send (current-dc) draw-rectangle 0. 0. 1.0 1.0)))))) ; x y w h
@@ -405,13 +408,12 @@
   (define pen   black-pen)
   (define brush black-brush)
   (λ (frame)
-    (define dc (current-dc))
-    (with-frame frame
+    (with-frame frame #:who segments->painter
       (with-pen pen
         (with-brush brush
           (for ([a-segment segments])
             (match-define (segment (vect x1 y1) (vect x2 y2)) a-segment)
-            (send dc draw-line x1 y1 x2 y2)))))))
+            (send (current-dc) draw-line x1 y1 x2 y2)))))))
 
 (define (vects->painter vects)
   (segments->painter (vects->segments vects)))
@@ -431,7 +433,7 @@
   (send flipped-dc set-initial-matrix (vector 1 0 0 -1 0 h))
   (send flipped-dc draw-bitmap bm 0 0)  
   (λ (frame)
-    (with-frame frame
+    (with-frame frame #:who bitmap->painter
       (send (current-dc) draw-bitmap-section-smooth
             flipped-bm ; source
             0. 0.      ; dest-x dest-y
@@ -454,7 +456,7 @@
     (send dc set-pen (new-pen (new-color (f x.0 y.0))))
     (send dc draw-point x y))
   (λ (frame)
-    (with-frame frame
+    (with-frame frame #:who procedure->painter
       (send (current-dc) draw-bitmap-section-smooth
             bm 0. 0. 1. 1. 0. 0. size size))))
 
