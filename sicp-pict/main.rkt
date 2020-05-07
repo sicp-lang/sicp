@@ -1,5 +1,4 @@
 #lang racket
-
 ;;;
 ;;; SICP Picture Language
 ;;;
@@ -124,20 +123,22 @@
          (+ (* a k) (* b l) e) (+ (* c k) (* d l) f)))
 
 (define (vector->transformation v)
-  (match v [(vector a b c d e f) (trans  a b c d e f)]))
+  (match v [(vector a b c d e f) (trans  a c b d e f)]))
 
 (define (transformation->vector t)
-  (match t [(trans  a b c d e f) (vector a b c d e f)]))
+  (match t [(trans  a b c d e f) (vector a c b d e f)]))
 
 ; frame->transformation : frame -> tranformation
 ;   return the transformation that converts coordinates in
 ;   system given by the frame into the coordinate system
 ;   in which the coordinates of the origin and edges of
 ;   the frame are given.
+
 (define (frame->transformation f)
   (match f
     [(frame (vect ox oy) (vect e1x e1y) (vect e2x e2y))
      (trans e1x e2x e1y e2y ox oy)]))
+
 
 ;;;
 ;;; Segments
@@ -310,6 +311,7 @@
            ; transform frame coordinates into input coordinates of current transform
            (compose-transformation old-transformation transformation))
          (send dc set-initial-matrix (transformation->vector new-transformation))
+         ; (send dc transform (transformation->vector transformation))
          (begin0
            (begin body ...)
            (send dc set-initial-matrix old-vector))))]))
