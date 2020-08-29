@@ -54,7 +54,7 @@ then use @racket[#%require].
 }
 
 @defproc[(runtime) natural-number/c]{
-  Returns the current time measured as the number of seconds passed since a fixed beginning.
+  Returns the current time measured as the number of microseconds passed since a fixed beginning.
 }
 
 @defproc[(random [n positive?]) real?]{
