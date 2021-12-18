@@ -2,7 +2,7 @@
 
 (require racket/provide
          (prefix-in r5rs: r5rs)
-         (rename-in racket [random racket:random]))
+         (only-in racket [random racket:random]))
 
 (provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
                        (except-out (all-from-out r5rs) r5rs:#%module-begin))
