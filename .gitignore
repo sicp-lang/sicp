@@ -1,3 +1,6 @@
 compiled
 doc
-sicp/main.bak
+*.bak
+*.css
+*.js
+*.html

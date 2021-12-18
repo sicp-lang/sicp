@@ -38,6 +38,7 @@
   (syntax-rules ()
     [(_ A B) (r5rs:cons A (r5rs:delay B))]))
 
+(define+provide apply-in-underlying-scheme r5rs:apply)
 
 (provide amb)
 
@@ -60,6 +61,10 @@
        (explore +prev-amb-fail +sk alt) ...
        (+prev-amb-fail)))))
 
+(define+provide user-initial-environment #f)
+(define (set-user-initial-environment! namespace)
+  (set! user-initial-environment namespace))
+
 (define-syntax module-begin
   (syntax-rules ()
     ((_ . forms)
@@ -68,4 +73,6 @@
         (print-as-expression #f)
         (print-pair-curly-braces  #t)
         (print-mpair-curly-braces #f))
+      (define-namespace-anchor tmp)
+      (set-user-initial-environment! (namespace-anchor->namespace tmp))
       . forms))))
