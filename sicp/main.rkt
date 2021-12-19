@@ -5,8 +5,9 @@
          (only-in racket [random racket:random]))
 
 (provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
-                       (except-out (all-from-out r5rs) r5rs:#%module-begin))
-         (rename-out [module-begin #%module-begin]))
+                       (except-out (all-from-out r5rs) r5rs:#%module-begin r5rs:set!))
+         (rename-out [module-begin #%module-begin]
+                     [amb-set! set!]))
 
 (define-syntax (define+provide stx)
   (syntax-case stx ()
@@ -42,7 +43,8 @@
 
 (provide amb)
 
-(define (amb-fail) (error "amb tree exhausted"))
+(define (base-amb-fail) (error "amb tree exhausted"))
+(define amb-fail base-amb-fail)
 (define (set-amb-fail! x) (set! amb-fail x))
 
 (define-syntax-rule (explore +prev-amb-fail +sk alt)
@@ -60,6 +62,17 @@
      (lambda (+sk)
        (explore +prev-amb-fail +sk alt) ...
        (+prev-amb-fail)))))
+
+(define-syntax-rule (amb-set! var val)
+  (if (eq? amb-fail base-amb-fail)
+      (r5rs:set! var val)
+      (let ([+prev-amb-fail amb-fail]
+            [old-value var])
+        (set-amb-fail!
+         (thunk
+          (r5rs:set! var old-value)
+          (+prev-amb-fail)))
+        (r5rs:set! var val))))
 
 (define+provide user-initial-environment #f)
 (define (set-user-initial-environment! namespace)
