@@ -276,8 +276,8 @@ Returns a painter that rotates the image.}
 Constructs a painter that paints the images side-by-side.}
 
 @defproc[(below [p1 painter/c] [p2 painter/c]) painter/c]{
-Constructs a painter that paints the second image
-below the first.}
+Constructs a painter that paints the first image
+below the second.}
 
 @defproc[(above3 [p1 painter/c] [p2 painter/c] [p3 painter/c]) painter/c]{
 Constructs a painter that paints the images one above the other.}
