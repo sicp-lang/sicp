@@ -535,9 +535,7 @@
    (transform-painter painter2 split-point1 (vect 1. (/ 1. 3)) split-point2)
    (transform-painter painter3 zero-vector  (vect 1. 0.)       split-point1)))
 
-(define (below painter1 painter2)
-  (rotate270 (beside (rotate90 painter2)
-                     (rotate90 painter1))))
+(define (below painter1 painter2) (above painter2 painter1))
 
 ;;;
 ;;; Predefined Basic Painters
@@ -614,9 +612,6 @@
 
 (define (escher)
   ; combinators
-  (define (above p1 p2)
-    (below p2
-           p1))
   (define (quartet p1 p2 p3 p4)
     (above (beside p1 p2)
            (beside p3 p4)))
@@ -636,9 +631,9 @@
   (define u       (cycle (rot q)))
   (define corner1 (quartet b b b u))
   (define corner2 (quartet corner1 side1 (rot side1) u))
-  (define corner  (nonet   corner2     side2    side2
-                           (rot side2)     u     (rot t)
-                           (rot side2)  (rot t)    q))
+  (define corner  (nonet corner2      side2    side2
+                         (rot side2)      u  (rot t)
+                         (rot side2) (rot t)      q))
   (define square-limit (cycle corner))
   square-limit)
 
