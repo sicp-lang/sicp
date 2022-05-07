@@ -6,7 +6,7 @@
                      (only-in racket/contract
                               -> any/c and/c or/c
                               listof contract?
-                              <=/c natural-number/c)
+                              real-in <=/c natural-number/c)
                      (only-in racket/class is-a?/c)
                      (only-in racket/draw bitmap% color%)
                      (only-in racket/snip image-snip%)))
@@ -16,6 +16,7 @@
 
 @title{SICP Picture Language}
 @defmodule[sicp-pict]
+@defmodule[typed/sicp-pict]
 
 @index["painter"]
 @index["geometry"]
@@ -192,6 +193,85 @@ the first vect to the endpoint of the second vect.
   (vects->segments (list (make-vect 1 2) (make-vect 3 4) (make-vect 5 6) (make-vect 7 8)))]
 }
 
+@section{COLORS, PENS, and BRUSHES}
+@defproc[(color-object? [v any/c]) boolean?]{
+  Defined as @racket[(is-a?/c color%)].
+}
+
+@defproc[(pen-object? [v any/c]) boolean?]{
+  Defined as @racket[(is-a?/c pen%)].
+}
+
+@defproc[(brush-object? [v any/c]) boolean?]{
+  Defined as @racket[(is-a?/c brush%)].
+}
+
+@deftogether[(@defproc[(new-color [color (or/c real? string? color-object?)]) color-object?]
+              @defproc[(new-color [r real?] [g real?] [b real?] [a (real-in 0 1) 1.0]) color-object?])]{
+  Create a color.
+}
+
+@defproc[(new-pen [color (or/c string? color-object?)]) pen-object?]{
+  Create a pen to draw lines and outlines.
+}
+
+@defproc[(new-brush [color (or/c string? color-object?)]) brush-object?]{
+  Create a brush to fill in areas.
+}
+
+@defproc[(new-stipple-brush [bm (or/c #f (is-a?/c bitmap%))]) brush-object?]{
+  Create a brush to fill in area with bitmap.
+}
+
+@defthing[black-color color-object?]{
+  Defined as @racket[(new-color "black")].
+}
+
+@defthing[white-color color-object?]{
+  Defined as @racket[(new-color "white")].
+}
+
+@defthing[black-pen pen-object?]{
+  Defined as @racket[(new-pen "black")].
+}
+
+@defthing[black-brush brush-object?]{
+  Defined as @racket[(new-brush "black")].
+}
+
+@defthing[transparent-brush brush-object?]{
+  Defined as @racket[(new-brush "transparent")].
+}
+
+@section{Syntactic Sugar}
+@defform[(echo painter-expr)]{
+  For debugging: print the @racket[paint-expr] then paint.
+  This makes it easy to see the expression that was used to produce an image.
+}
+
+@defform[(with-transformation transformation body ...)]{
+  Store the @racket[initial-matrix] of the drawing context given by @racket[current-dc].
+
+  Install @racket[transformation] as the @racket[initial-matrix].
+
+  Evaluate @racket[body ...].
+
+  Restore the saved @racket[initial-matrix].
+}
+
+@defform[(with-frame frame body ...)]{
+  Evaluate @racket[body ...] while the @racket[initial-matrix] of the drawing context @racket[current-dc]
+  is given by the transformation corresponding to @racket[frame].
+}
+
+@defform[(with-pen pen body ...)]{
+  Evaluate @racket[body ...] while @racket[pen] is installed in the drawing context given by @racket[current-dc].
+}
+
+@defform[(with-brush brush body ...)]{
+  Evaluate @racket[body ...] while @racket[brush] is installed in the drawing context given by @racket[current-dc].
+}
+
 @section{Primitive Painters}
 
 Painters take a frame and draw an image, transformed to fit inside the frame.
@@ -222,10 +302,13 @@ segments (w.r.t. the unit square).}
 Constructs a painter that draws a stick figure given by the
 vects (w.r.t. the unit square).}
 
-@defproc[(procedure->painter [f procedure?]) painter/c]{
+@defproc[(procedure->painter [f (-> (real-in 0 1)
+                                    (real-in 0 1)
+                                    (or/c real? string? color-object?))]
+                             [size real? 100]) painter/c]{
 
-Creates painters from procedures.  We assume that the procedure
-@racket[f] is defined on the unit square.
+Creates painters from procedures. We assume that the procedure
+@racket[f] is defined on the unit square of size @racket[size].
 
 Then to plot a point p in the target frame, we find the inverse image
 T^-1(p) of p under the transformation that maps the unit square to the
@@ -252,7 +335,8 @@ to create a painter.}
 
 @section{Higher Order Painters}
 
-@defproc[(transform-painter [origin vect?]
+@defproc[(transform-painter [p painter/c]
+                            [origin vect?]
                             [corner1 vect?]
                             [corner2 vect?]) (painter/c . -> . painter/c)]{
 Returns a function that takes a painter as argument and returns
@@ -275,16 +359,20 @@ Returns a painter that rotates the image.}
 @defproc[(beside [p1 painter/c] [p2 painter/c]) painter/c]{
 Constructs a painter that paints the images side-by-side.}
 
-@defproc[(below [p1 painter/c] [p2 painter/c]) painter/c]{
-Constructs a painter that paints the first image
-below the second.}
+@defproc[(beside3 [p1 painter/c] [p2 painter/c] [p3 painter/c]) painter/c]{
+Constructs a painter that paints the images one beside the other.}
+
+@defproc[(above [p1 painter/c] [p2 painter/c]) painter/c]{
+Constructs a painter that paints the first image above the second.}
 
 @defproc[(above3 [p1 painter/c] [p2 painter/c] [p3 painter/c]) painter/c]{
 Constructs a painter that paints the images one above the other.}
 
-@defproc[(superpose [p1 painter/c] [p2 painter/c]) painter/c]{
-Constructs a painter that paints the two images
-on top of each other.}
+@defproc[(below [p1 painter/c] [p2 painter/c]) painter/c]{
+Constructs a painter that paints the first image below the second.}
+
+@defproc[(superpose [p painter/c] ...) painter/c]{
+Constructs a painter that paints all images on top of each other.}
 
 @section{Simple Built-In Painters}
 
