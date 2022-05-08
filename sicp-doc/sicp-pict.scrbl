@@ -378,6 +378,10 @@ Constructs a painter that paints all images on top of each other.}
 
 The following painter values are built-in:
 
+@defthing[blank painter/c]{
+  Draws nothing.
+}
+
 @deftogether[(@defthing[black painter/c]
               @defthing[white painter/c]
               @defthing[gray painter/c])]{

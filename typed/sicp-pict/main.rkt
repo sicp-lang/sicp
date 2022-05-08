@@ -102,6 +102,7 @@
   ;;;
   ;;; Predefined Basic Painters
   ;;;
+  [blank            Painter]
   [black            Painter]
   [white            Painter]
   [gray             Painter]
