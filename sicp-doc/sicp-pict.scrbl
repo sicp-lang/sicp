@@ -194,7 +194,7 @@ the first vect to the endpoint of the second vect.
   (vects->segments (list (make-vect 1 2) (make-vect 3 4) (make-vect 5 6) (make-vect 7 8)))]
 }
 
-@section{COLORS, PENS, and BRUSHES}
+@section{Colors, Pens, and Brushes}
 @defproc[(color-object? [v any/c]) boolean?]{
   Defined as @racket[(is-a?/c color%)].
 }
@@ -303,9 +303,11 @@ segments (w.r.t. the unit square).}
 Constructs a painter that draws a stick figure given by the
 vects (w.r.t. the unit square).}
 
-@defproc[(procedure->painter [f (-> (real-in 0 1)
-                                    (real-in 0 1)
-                                    (or/c real? string? color-object?))]
+@defthing[painter-procedure/c contract?]{
+A contract that recognizes a procedure which can be used to create painter.
+}
+
+@defproc[(procedure->painter [f painter-procedure/c]
                              [size real? 100]) painter/c]{
 
 Creates painters from procedures. We assume that the procedure

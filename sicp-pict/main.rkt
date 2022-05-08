@@ -382,6 +382,7 @@
 ;;;
 
 (provide painter/c
+         painter-procedure/c
          ;
          paint
          paint-hi-res
@@ -392,11 +393,7 @@
                        [color->painter (-> color-object? painter/c)]
                        [segments->painter (-> (sequence/c segment?) painter/c)]
                        [vects->painter (-> (sequence/c vect?) painter/c)]
-                       [procedure->painter (->* ((-> (real-in 0 1)
-                                                     (real-in 0 1)
-                                                     (or/c real? string? color-object?)))
-                                                (real?)
-                                                painter/c)]
+                       [procedure->painter (->* (painter-procedure/c) (real?) painter/c)]
                        [bitmap->painter (-> (or/c path-string? (is-a?/c bitmap%)) painter/c)]
                        [load-painter (-> (or/c path-string? (is-a?/c bitmap%)) painter/c)]))
 
@@ -462,6 +459,10 @@
 (define load-painter bitmap->painter)
 
 ;;; Procedure Painter
+(define painter-procedure/c
+  (-> (real-in 0 1)
+      (real-in 0 1)
+      (or/c real? string? color-object?)))
 (define (procedure->painter f [size 100])
   ; f : ((real-in 0 1) (real-in 0 1) -> (or/c real? string? color-object?))
   (define bm (make-object bitmap% size size))
