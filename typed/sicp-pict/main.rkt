@@ -70,12 +70,6 @@
   [transparent-brush (Instance Brush%)]
 
   ;;;
-  ;;;  Current Drawing Context
-  ;;;
-  [current-bm (Parameter (Option (Instance Bitmap%)))]
-  [current-dc (Parameter (Option (Instance Bitmap-DC%)))]
-
-  ;;;
   ;;; Primitive Painters
   ;;;
   [paint              (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
@@ -120,7 +114,13 @@
 (unsafe-require/typed/provide "../../sicp-pict/main.rkt"
   [color-object? (pred (Instance Color%))]
   [pen-object?   (pred (Instance Pen%))]
-  [brush-object? (pred (Instance Brush%))])
+  [brush-object? (pred (Instance Brush%))]
+
+  ;;;
+  ;;;  Current Drawing Context
+  ;;;
+  [current-bm (Parameter (Option (Instance Bitmap%)))]
+  [current-dc (Parameter (Option (Instance Bitmap-DC%)))])
 
 
 (provide (all-from-out "../../sicp-pict/main.rkt")
