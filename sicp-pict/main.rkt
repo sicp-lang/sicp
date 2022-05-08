@@ -546,7 +546,7 @@
 ;;;
 (provide blank black white gray diagonal-shading mark-of-zorro einstein escher)
 
-(define blank            identity)
+(define blank            (superpose))
 (define black            (number->painter   0))
 (define white            (number->painter 255))
 (define gray             (number->painter 150))
