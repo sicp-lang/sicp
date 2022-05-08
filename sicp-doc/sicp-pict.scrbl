@@ -5,10 +5,11 @@
                      racket/base
                      (only-in racket/contract
                               -> any/c and/c or/c
-                              listof contract?
+                              listof contract? parameter/c
                               real-in <=/c natural-number/c)
+                     (only-in racket/sequence sequence/c)
                      (only-in racket/class is-a?/c)
-                     (only-in racket/draw bitmap% color%)
+                     (only-in racket/draw bitmap% bitmap-dc% color% pen% brush%)
                      (only-in racket/snip image-snip%)))
 
 @(define the-eval (make-base-eval))
@@ -409,6 +410,15 @@ The following painter values are built-in:
 @section{Painting}
 
 Painting turns a painter into an @emph{image snip} which can be displayed in DrRacket automatically.
+
+@deftogether[(@defthing[current-bm (parameter/c (or/c #f (is-a?/c bitmap%)))]
+              @defthing[current-dc (parameter/c (or/c #f (is-a?/c bitmap-dc%)))])]{
+  A painter needs to paint on something.
+  We will use a parameter  @racket[current-dc]  to hold the drawing context
+  of "what is currently being drawn to".
+  In practice this will hold the drawing context (@racket[current-dc])
+  for a bitmap (@racket[current-bm]).
+}
 
 @defproc[(paint [p painter/c]
                 [#:width width (and/c positive? integer?) 200]

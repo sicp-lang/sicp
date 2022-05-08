@@ -249,10 +249,13 @@
 ;;;  Current Drawing Context
 ;;;
 
+(provide (contract-out [current-bm (parameter/c (or/c #f (is-a?/c bitmap%)))]
+                       [current-dc (parameter/c (or/c #f (is-a?/c bitmap-dc%)))]))
+
 ; A painter needs to paint on something.
 ; We will use a parameter  current-dc  to hold the drawing context
 ; of "what is currently being drawn to".
-; In practice this will hold the a drawing context for a bitmap.
+; In practice this will hold the drawing context for a bitmap.
 
 (define current-bm (make-parameter #f))
 (define current-dc (make-parameter #f))

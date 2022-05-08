@@ -70,11 +70,17 @@
   [transparent-brush (Instance Brush%)]
 
   ;;;
+  ;;;  Current Drawing Context
+  ;;;
+  [current-bm (Parameter (Option (Instance Bitmap%)))]
+  [current-dc (Parameter (Option (Instance Bitmap-DC%)))]
+
+  ;;;
   ;;; Primitive Painters
   ;;;
-  [paint              (-> Painter [#:width Natural] [#:height Natural] (Instance Image-Snip%))]
-  [paint-hires        (-> Painter [#:width Natural] [#:height Natural] (Instance Image-Snip%))]
-  [paint-hi-res       (-> Painter [#:width Natural] [#:height Natural] (Instance Image-Snip%))]
+  [paint              (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
+  [paint-hires        (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
+  [paint-hi-res       (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
   [number->painter    (-> Byte Painter)]
   [color->painter     (-> (Instance Color%) Painter)]
   [segments->painter  (-> (Sequenceof Segment) Painter)]
