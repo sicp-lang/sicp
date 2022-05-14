@@ -202,8 +202,6 @@
       [(r g b) (new-color r g b 1.0)]
       [(r g b a) (hash-ref! colors (list r g b a)
                             (λ ()
-                              (unless ((real-in 0 1) a)
-                                (raise-argument-error 'new-color "(real-in 0 1)" a))
                               (let ([r (real->byte r)]
                                     [g (real->byte g)]
                                     [b (real->byte b)])
