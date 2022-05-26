@@ -5,7 +5,9 @@
          (rename-in racket [random racket:random]))
 
 (provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
-                       (except-out (all-from-out r5rs) r5rs:#%module-begin))
+                       (combine-out
+                        (except-out (all-from-out r5rs) r5rs:#%module-begin)
+                        (rename-out [r5rs:lambda r5rs:λ])))
          (rename-out [module-begin #%module-begin]))
 
 (define-syntax (define+provide stx)
@@ -45,20 +47,23 @@
 (define (set-amb-fail! x) (set! amb-fail x))
 
 (define-syntax-rule (explore +prev-amb-fail +sk alt)
-  (call/cc
-   (lambda (+fk)
-     (set-amb-fail!
-      (thunk
-       (set-amb-fail! +prev-amb-fail)
-       (+fk 'fail)))
-     (+sk alt))))
+  (let/cc +fk
+    (set-amb-fail!
+     (thunk
+      (set-amb-fail! +prev-amb-fail)
+      (+fk 'fail)))
+    (+sk alt)))
 
-(define-syntax-rule (amb alt ...)
-  (let ([+prev-amb-fail amb-fail])
-    (call/cc
-     (lambda (+sk)
-       (explore +prev-amb-fail +sk alt) ...
-       (+prev-amb-fail)))))
+(define-syntax amb
+  (syntax-rules ()
+    [(_) (amb-fail)]
+    [(_ alt) alt]
+    [(_ alt ...)
+     (let ([+prev-amb-fail amb-fail])
+       (let/cc +sk
+         (explore +prev-amb-fail +sk alt)
+         ...
+         (+prev-amb-fail)))]))
 
 (define-syntax module-begin
   (syntax-rules ()
