@@ -506,7 +506,8 @@
 
 (define superpose
   (case-lambda
-    [() blank]
+    [()        blank]
+    [(painter) painter]
     [painters
      (λ (frame)
        (for ([painter (in-list painters)])
