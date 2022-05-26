@@ -19,11 +19,16 @@
                      (provide id)
                      (define id expr))]))
 
-(provide true)
-(provide false)
-(provide error)
-(provide identity)
 (provide
+ true
+ false
+ error
+ compose
+ compose1
+ identity
+ null
+ add1
+ sub1
  (rename-out
   [null  nil]
   [null  the-empty-stream]
