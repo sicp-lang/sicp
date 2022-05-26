@@ -23,11 +23,16 @@
 (provide false)
 (provide error)
 (provide identity)
-(define+provide nil '())
-(define+provide the-empty-stream '())
-(define+provide stream-null? null?)
-(define+provide (inc x) (+ x 1))
-(define+provide (dec x) (- x 1))
+(provide
+ (rename-out
+  [null  nil]
+  [null  the-empty-stream]
+  [null? stream-null?]
+  [add1 inc]
+  [sub1 dec]
+  [add1 1+]
+  [sub1 1-]
+  [sub1 -1+]))
 (define+provide (runtime)
   (inexact->exact (truncate (* 1000 (current-inexact-milliseconds)))))
 (define+provide (random n)
