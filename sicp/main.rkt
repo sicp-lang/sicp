@@ -19,25 +19,19 @@
                      (provide id)
                      (define id expr))]))
 
-(provide
- true
- false
- error
- compose
- compose1
- identity
- null
- add1
- sub1
- (rename-out
-  [null  nil]
-  [null  the-empty-stream]
-  [null? stream-null?]
-  [add1 inc]
-  [sub1 dec]
-  [add1 1+]
-  [sub1 1-]
-  [sub1 -1+]))
+(provide true false error
+         compose compose1 identity
+         empty empty? null
+         add1 sub1
+         (rename-out
+          [null  nil]
+          [null  the-empty-stream]
+          [null? stream-null?]
+          [add1 inc]
+          [sub1 dec]
+          [add1 1+]
+          [sub1 1-]
+          [sub1 -1+]))
 (define+provide (runtime)
   (inexact->exact (truncate (* 1000 (current-inexact-milliseconds)))))
 (define+provide (random n)
