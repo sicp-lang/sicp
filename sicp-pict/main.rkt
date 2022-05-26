@@ -504,10 +504,13 @@
 (define rotate180      (repeated rotate90 2))
 (define rotate270      (repeated rotate90 3))
 
-(define (superpose . painters)
-  (λ (frame)
-    (for ([painter (in-list painters)])
-      (painter frame))))
+(define superpose
+  (case-lambda
+    [() blank]
+    [painters
+     (λ (frame)
+       (for ([painter (in-list painters)])
+         (painter frame)))]))
 
 (define (beside painter1 painter2)
   (define split-point (vect .5 0.))
@@ -544,7 +547,7 @@
 ;;;
 (provide blank black white gray diagonal-shading mark-of-zorro einstein escher)
 
-(define blank            (superpose))
+(define blank            (λ (frame) (void)))
 (define black            (number->painter   0))
 (define white            (number->painter 255))
 (define gray             (number->painter 150))
