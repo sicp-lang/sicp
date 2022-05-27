@@ -32,26 +32,63 @@ then use @racket[#%require].
   An alias for @racket['()].
 }
 
-@defproc[(inc [x number?]) number?]{
+@deftogether[(@defproc[(inc [x number?]) number?]
+              @defproc[(1+  [x number?]) number?])]{
   Returns @racket[(+ x 1)].
 }
 
-@defproc[(dec [x number?]) number?]{
+@deftogether[(@defproc[(dec [x number?]) number?]
+              @defproc[(-1+ [x number?]) number?]
+              @defproc[(1-  [x number?]) number?])]{
   Returns @racket[(- x 1)].
 }
 
-@defthing[the-empty-stream stream?]{
+@deftogether[(@defthing[the-empty-stream stream?]
+              @defthing[empty-stream stream?])]{
   The null/empty stream.
 }
 
-@defform[(cons-stream first-expr rest-expr)]{
-  Produces a stream
+@deftogether[(@defform[(cons-stream first-expr rest-expr)]
+              @defform[(stream-cons first-expr rest-expr)])]{
+  Produces a stream whose first element is determined by
+  @racket[first-expr] and whose rest is determined by
+  @racket[rest-expr].
 }
 
-@defproc[(stream-null? [s stream?]) boolean?]{
+@defform[(stream v ...)]{
+  A shorthand for nested @racket[cons-stream]s ending with @racket[the-empty-stream].
+}
+
+@defform[(stream* v ... tail)]{
+  A shorthand for nested @racket[cons-stream]s, but the @racket[tail]
+  must produce a stream when it is forced, and that stream
+  is used as the rest of the stream instead of @racket[the-empty-stream].
+  Similar to @racket[list*] but for streams.
+}
+
+@deftogether[(@defproc[(stream-null?  [s stream?]) boolean?]
+              @defproc[(stream-empty? [s stream?]) boolean?])]{
   Returns @racket[#t] if @racket[s] is @racket[the-empty-stream],
   @racket[#f] otherwise.
 }
+
+@defproc[(stream? [v any/c]) boolean?]{
+  Returns @racket[#t] if @racket[v] is @racket[the-empty-stream] or a pair,
+  @racket[#f] otherwise.
+  Although the expectation is a pair whose second element is a promise,
+  @racket[stream?] doesn't check it, since @racket[promise?] is undefined.
+}
+
+@deftogether[(@defproc[(stream-car   [s (and/c stream? (not/c stream-null?))]) any]
+              @defproc[(stream-first [s (and/c stream? (not/c stream-null?))]) any])]{
+  Returns the value(s) of the first element in @racket[s].
+}
+
+@deftogether[(@defproc[(stream-cdr  [s (and/c stream? (not/c stream-null?))]) stream?]
+              @defproc[(stream-rest [s (and/c stream? (not/c stream-null?))]) stream?])]{
+  Returns a stream that is equivalent to @racket[s] without its first element.
+}
+
 
 @defproc[(runtime) natural-number/c]{
   Returns the current time measured as the number of microseconds passed since a fixed beginning.
@@ -67,4 +104,6 @@ then use @racket[#%require].
   The amb operator.
 }
 
-Additionally, @racket[true], @racket[false], @racket[identity], and @racket[error] are provided from Racket.
+Additionally, @racket[true], @racket[false], @racket[raise], @racket[error],
+@racket[compose], @racket[compose1], @racket[identity],
+@racket[empty?], @racket[empty], and @racket[null] are provided from Racket.

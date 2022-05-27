@@ -19,14 +19,13 @@
                      (provide id)
                      (define id expr))]))
 
-(provide true false error
+(provide true false
+         raise error
          compose compose1 identity
-         empty empty? null
+         empty? empty null
          add1 sub1
          (rename-out
           [null  nil]
-          [null  the-empty-stream]
-          [null? stream-null?]
           [add1 inc]
           [sub1 dec]
           [add1 1+]
@@ -39,10 +38,31 @@
       (racket:random n)
       (* n (racket:random))))
 
-(provide cons-stream)
+(provide cons-stream stream* stream
+         (rename-out
+          [the-empty-stream empty-stream]
+          [cons-stream      stream-cons]
+          [stream-null?     stream-empty?]
+          [stream-car       stream-first]
+          [stream-cdr       stream-rest]))
 (define-syntax cons-stream
   (syntax-rules ()
     [(_ A B) (r5rs:cons A (r5rs:delay B))]))
+(define-syntax stream*
+  (syntax-rules ()
+    [(_ A) A]
+    [(_ A B ...) (cons-stream A (stream* B ...))]))
+(define-syntax stream
+  (syntax-rules ()
+    [(_ A ...) (stream* A ... the-empty-stream)]))
+(define+provide the-empty-stream '())
+(define+provide stream-null? null?)
+(define+provide (stream? v)
+  (or (stream-null? v)
+      (and (r5rs:pair? v)
+           #;(r5rs:promise? (r5rs:cdr v)))))
+(define+provide stream-car r5rs:car)
+(define+provide stream-cdr (compose1 r5rs:force r5rs:cdr))
 
 
 (provide amb)
