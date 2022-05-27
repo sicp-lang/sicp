@@ -1,9 +1,12 @@
 #lang scribble/doc
 
 @(require scribble/manual scribble/eval
-          (for-label (except-in sicp #%app #%datum #%top true false identity error)
-                     (only-in racket require true false identity error
-                                     natural-number/c any/c)))
+          (for-label (except-in sicp #%app #%datum #%top)
+                     (only-in racket/base require list*)
+                     (only-in racket/contract
+                              any any/c
+                              and/c or/c not/c
+                              natural-number/c)))
 
 @title{SICP Language}
 @defmodule[sicp #:lang]
@@ -106,4 +109,5 @@ then use @racket[#%require].
 
 Additionally, @racket[true], @racket[false], @racket[raise], @racket[error],
 @racket[compose], @racket[compose1], @racket[identity],
-@racket[empty?], @racket[empty], and @racket[null] are provided from Racket.
+@racket[empty?], @racket[empty], @racket[null],
+@racket[add1], and @racket[sub1] are provided from Racket.
