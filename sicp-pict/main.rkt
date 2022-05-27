@@ -161,7 +161,7 @@
     (segment v w)))
 
 ;;;
-;;; COLORS, PENS, and BRUSHES
+;;; Colors, Pens, and Brushes
 ;;;
 
 (provide (contract-out

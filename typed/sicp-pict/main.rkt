@@ -56,7 +56,7 @@
   [vects->segments (-> (Sequenceof Vect) (Listof Segment))]
 
   ;;;
-  ;;; COLORS, PENS, AND, BRUSHES
+  ;;; Colors, Pens, and Brushes
   ;;;
   [new-color         (case-> (->* (Real Real Real) (Real) (Instance Color%))
                              (-> (U Number String (Instance Color%)) (Instance Color%)))]
@@ -119,6 +119,9 @@
   ;;;
   ;;;  Current Drawing Context
   ;;;
+
+  ; The original parameter contract will cause
+  ; the program to be very slow in some cases.
   [current-bm (Parameter (Option (Instance Bitmap%)))]
   [current-dc (Parameter (Option (Instance Bitmap-DC%)))])
 
