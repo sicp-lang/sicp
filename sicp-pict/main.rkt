@@ -504,10 +504,10 @@
 (define rotate180      (repeated rotate90 2))
 (define rotate270      (repeated rotate90 3))
 
-(define superpose
-  (case-lambda
-    [()        blank]
-    [(painter) painter]
+(define (superpose . painter*)
+  (match (remove* (list blank) painter*)
+    ['()         blank]
+    [`(,painter) painter]
     [painters
      (λ (frame)
        (for ([painter (in-list painters)])
