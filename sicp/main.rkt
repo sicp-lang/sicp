@@ -25,7 +25,7 @@
          empty? empty null
          add1 sub1
          (rename-out
-          [null  nil]
+          [null nil]
           [add1 inc]
           [sub1 dec]
           [add1 1+]
