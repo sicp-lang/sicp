@@ -509,9 +509,11 @@
     ['()         blank]
     [`(,painter) painter]
     [painters
-     (λ (frame)
-       (for ([painter (in-list painters)])
-         (painter frame)))]))
+     (define superposed
+       (λ (frame)
+         (for ([painter (in-list painters)])
+           (painter frame))))
+     superposed]))
 
 (define (beside painter1 painter2)
   (define split-point (vect .5 0.))
