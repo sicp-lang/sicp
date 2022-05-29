@@ -2,12 +2,11 @@
 
 (require racket/provide
          (prefix-in r5rs: r5rs)
-         (rename-in racket [random racket:random]))
+         (only-in r5rs [lambda r5rs:λ])
+         (only-in racket/base [random racket:random]))
 
 (provide (filtered-out (λ (name) (regexp-replace #px"^r5rs:" name ""))
-                       (combine-out
-                        (except-out (all-from-out r5rs) r5rs:#%module-begin)
-                        (rename-out [r5rs:lambda r5rs:λ])))
+                       (except-out (all-from-out r5rs) r5rs:#%module-begin))
          (rename-out [module-begin #%module-begin]))
 
 (define-syntax (define+provide stx)
