@@ -551,12 +551,12 @@
 (provide blank black white gray diagonal-shading mark-of-zorro einstein escher)
 
 (define blank            (λ (frame) (void)))
-(define black            (number->painter   0))
-(define white            (number->painter 255))
-(define gray             (number->painter 150))
-(define diagonal-shading (procedure->painter (λ (x y) (* 100 (+ x y)))))
-(define mark-of-zorro    (vects->painter (list (vect .1 .9) (vect .8 .9) (vect .1 .2) (vect .9 .3))))
-(define einstein         (bitmap->painter einstein-file))
+(define black            (procedure-rename (number->painter   0) 'black))
+(define white            (procedure-rename (number->painter 255) 'white))
+(define gray             (procedure-rename (number->painter 150) 'gray))
+(define diagonal-shading (procedure-rename (procedure->painter (λ (x y) (* 100 (+ x y)))) 'diagonal-shading))
+(define mark-of-zorro    (procedure-rename (vects->painter (list (vect .1 .9) (vect .8 .9) (vect .1 .2) (vect .9 .3))) 'mark-of-zorro))
+(define einstein         (procedure-rename (bitmap->painter einstein-file) 'einstein))
 
 ;;; Escher Example
 
