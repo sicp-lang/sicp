@@ -632,7 +632,7 @@
     (quartet      p1  (rot (rot (rot p1)))
              (rot p1)      (rot (rot p1))))
   (define rot     rotate90)
-  (define b       white) ; blank
+  (define b       blank)
   (define-values (p q r s) (values P Q R S))
   (define t       (quartet p q r s))
   (define side1   (quartet b b (rot t) t))
