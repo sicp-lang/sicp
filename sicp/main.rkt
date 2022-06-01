@@ -16,17 +16,21 @@
                                 (define (id . args) . body))]
     [(_ id expr) #'(begin
                      (provide id)
-                     (define id expr))]))
+                     (define id
+                       (let ([id expr])
+                         (if (procedure? id)
+                             (procedure-rename id 'id)
+                             id))))]))
 
 (provide true false
          raise error
          compose compose1 identity
          empty? empty null)
-(define+provide (inc x) (add1 x))
-(define+provide (dec x) (sub1 x))
-(define+provide (1+  x) (add1 x))
-(define+provide (1-  x) (sub1 x))
-(define+provide (-1+ x) (sub1 x))
+(define+provide inc add1)
+(define+provide dec sub1)
+(define+provide 1+  add1)
+(define+provide 1-  sub1)
+(define+provide -1+ sub1)
 (define+provide nil '())
 (define+provide (runtime)
   (inexact->exact (truncate (* 1000 (current-inexact-milliseconds)))))
@@ -53,13 +57,13 @@
   (syntax-rules ()
     [(_ A ...) (stream* A ... the-empty-stream)]))
 (define+provide the-empty-stream '())
-(define+provide (stream-null? v) (null? v))
+(define+provide stream-null? null?)
 (define+provide (stream? v)
   (or (stream-null? v)
       (and (r5rs:pair? v)
            #;(r5rs:promise? (r5rs:cdr v)))))
-(define+provide (stream-car s) (r5rs:car s))
-(define+provide (stream-cdr s) (r5rs:force (r5rs:cdr s)))
+(define+provide stream-car r5rs:car)
+(define+provide stream-cdr (compose1 r5rs:force r5rs:cdr))
 
 
 (provide amb)
