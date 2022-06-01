@@ -438,17 +438,17 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
   See also @racket[make-bitmap].
 }
 
-@deftogether[(@defproc[(paint [p painter/c]
-                              [alpha? any/c #t]
-                              [#:width width exact-positive-integer? 200]
-                              [#:height height exact-positive-integer? 200]
-                              [#:backing-scale backing-scale (>/c 0.0) 1.0])
+@deftogether[(@defproc[(paint-hi-res [p painter/c]
+                                     [alpha? any/c #t]
+                                     [#:width width exact-positive-integer? 200]
+                                     [#:height height exact-positive-integer? 200]
+                                     [#:backing-scale backing-scale (>/c 0.0) 1.0])
                        (is-a?/c image-snip%)]
-              @defproc[(paint [p painter/c]
-                              [alpha? any/c #t]
-                              [#:width width exact-positive-integer? 200]
-                              [#:height height exact-positive-integer? 200]
-                              [#:backing-scale backing-scale (>/c 0.0) 1.0])
+              @defproc[(paint-hires [p painter/c]
+                                    [alpha? any/c #t]
+                                    [#:width width exact-positive-integer? 200]
+                                    [#:height height exact-positive-integer? 200]
+                                    [#:backing-scale backing-scale (>/c 0.0) 1.0])
                        (is-a?/c image-snip%)])]{
   Aliases of @racket[paint]. They are provided for compatibility with old texts.
 }
