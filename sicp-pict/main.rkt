@@ -260,10 +260,15 @@
 
 (define painter/c (-> frame? any/c))
 
-(define (paint painter #:width [width 200] #:height [height 200])
+(define (paint painter
+               [alpha? #t]
+               #:width  [width 200]
+               #:height [height 200]
+               #:backing-scale [backing-scale 1.0])
   ; To get a painting from a painter, we need to create a new
   ; bitmap into which the painter can draw.
-  (define-values (bm dc) (make-painter-bitmap width height))
+  (define-values (bm dc)
+    (make-painter-bitmap width height alpha? #:backing-scale backing-scale))
   (parameterize ([current-bm bm]
                  [current-dc dc])
     (send dc scale 0.99 0.99) ; make the entire unit square visible
@@ -280,8 +285,8 @@
 ; such that both axis are scaled and the y-axis is flipped.
 ; Flipping the y-axis also implies we need to translate
 ; the origin in the y-direction
-(define (make-painter-bitmap width height)
-  (define bm (make-bitmap width height))
+(define (make-painter-bitmap width height alpha? #:backing-scale backing-scale)
+  (define bm (make-bitmap width height alpha? #:backing-scale backing-scale))
   (define dc (new bitmap-dc% [bitmap bm]))
   (send dc set-pen black-pen)
   (send dc set-brush black-brush)

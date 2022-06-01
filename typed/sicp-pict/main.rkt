@@ -72,9 +72,24 @@
   ;;;
   ;;; Primitive Painters
   ;;;
-  [paint              (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
-  [paint-hires        (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
-  [paint-hi-res       (-> Painter [#:width Positive-Integer] [#:height Positive-Integer] (Instance Image-Snip%))]
+  [paint        (->* (Painter)
+                     (Any
+                      #:width  Positive-Integer
+                      #:height Positive-Integer
+                      #:backing-scale Positive-Real)
+                     (Instance Image-Snip%))]
+  [paint-hires  (->* (Painter)
+                     (Any
+                      #:width  Positive-Integer
+                      #:height Positive-Integer
+                      #:backing-scale Positive-Real)
+                     (Instance Image-Snip%))]
+  [paint-hi-res (->* (Painter)
+                     (Any
+                      #:width  Positive-Integer
+                      #:height Positive-Integer
+                      #:backing-scale Positive-Real)
+                     (Instance Image-Snip%))]
   [number->painter    (-> Byte Painter)]
   [color->painter     (-> (Instance Color%) Painter)]
   [segments->painter  (-> (Sequenceof Segment) Painter)]

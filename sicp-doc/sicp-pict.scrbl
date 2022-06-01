@@ -9,7 +9,10 @@
                               real-in <=/c natural-number/c)
                      (only-in racket/sequence sequence/c)
                      (only-in racket/class is-a?/c)
-                     (only-in racket/draw bitmap% bitmap-dc% color% pen% brush%)
+                     (only-in racket/draw
+                              bitmap% bitmap-dc%
+                              color% pen% brush%
+                              make-bitmap)
                      (only-in racket/snip image-snip%)))
 
 @(define the-eval (make-base-eval))
@@ -423,20 +426,29 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
 }
 
 @defproc[(paint [p painter/c]
-                [#:width  width  exact-positive-integer? 200]
-                [#:height height exact-positive-integer? 200])
+                [alpha? any/c #t]
+                [#:width width exact-positive-integer? 200]
+                [#:height height exact-positive-integer? 200]
+                [#:backing-scale backing-scale (>/c 0.0) 1.0])
          (is-a?/c image-snip%)]{
   Returns an image snip that contains the painter's image with
-  the specified @racket[width] and @racket[height].
+  the specified @racket[alpha?], @racket[width], @racket[height],
+  and @racket[backing-scale].
+
+  See also @racket[make-bitmap].
 }
 
-@deftogether[(@defproc[(paint-hi-res [p painter/c]
-                                     [#:width  width  exact-positive-integer? 200]
-                                     [#:height height exact-positive-integer? 200])
+@deftogether[(@defproc[(paint [p painter/c]
+                              [alpha? any/c #t]
+                              [#:width width exact-positive-integer? 200]
+                              [#:height height exact-positive-integer? 200]
+                              [#:backing-scale backing-scale (>/c 0.0) 1.0])
                        (is-a?/c image-snip%)]
-              @defproc[(paint-hires [p painter/c]
-                                    [#:width  width  exact-positive-integer? 200]
-                                    [#:height height exact-positive-integer? 200])
+              @defproc[(paint [p painter/c]
+                              [alpha? any/c #t]
+                              [#:width width exact-positive-integer? 200]
+                              [#:height height exact-positive-integer? 200]
+                              [#:backing-scale backing-scale (>/c 0.0) 1.0])
                        (is-a?/c image-snip%)])]{
   Aliases of @racket[paint]. They are provided for compatibility with old texts.
 }
