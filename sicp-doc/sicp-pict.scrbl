@@ -423,20 +423,20 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
 }
 
 @defproc[(paint [p painter/c]
-                [#:width width (and/c positive? integer?) 200]
-                [#:height height (and/c positive? integer?) 200])
+                [#:width  width  exact-positive-integer? 200]
+                [#:height height exact-positive-integer? 200])
          (is-a?/c image-snip%)]{
   Returns an image snip that contains the painter's image with
   the specified @racket[width] and @racket[height].
 }
 
 @deftogether[(@defproc[(paint-hi-res [p painter/c]
-                                     [#:width width (and/c positive? integer?) 200]
-                                     [#:height height (and/c positive? integer?) 200])
+                                     [#:width  width  exact-positive-integer? 200]
+                                     [#:height height exact-positive-integer? 200])
                        (is-a?/c image-snip%)]
               @defproc[(paint-hires [p painter/c]
-                                    [#:width width (and/c positive? integer?) 200]
-                                    [#:height height (and/c positive? integer?) 200])
+                                    [#:width  width  exact-positive-integer? 200]
+                                    [#:height height exact-positive-integer? 200])
                        (is-a?/c image-snip%)])]{
   Aliases of @racket[paint]. They are provided for compatibility with old texts.
 }
