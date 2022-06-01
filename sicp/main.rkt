@@ -17,8 +17,9 @@
     [(_ id expr) #'(begin
                      (provide id)
                      (define id
-                       (let ([id expr])
-                         (if (procedure? id)
+                       (letrec ([id expr])
+                         (if (and (procedure? id)
+                                  (not (eq? (object-name id) 'id)))
                              (procedure-rename id 'id)
                              id))))]))
 
