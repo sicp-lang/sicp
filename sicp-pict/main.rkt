@@ -260,9 +260,9 @@
 
 (define painter/c (-> frame? any/c))
 
-; To get a painting from a painter, we need to create a new
-; bitmap into which the painter can draw.
 (define (paint painter #:width [width 200] #:height [height 200])
+  ; To get a painting from a painter, we need to create a new
+  ; bitmap into which the painter can draw.
   (define-values (bm dc) (make-painter-bitmap width height))
   (parameterize ([current-bm bm]
                  [current-dc dc])
