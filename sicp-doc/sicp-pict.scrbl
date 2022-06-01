@@ -6,7 +6,7 @@
                      (only-in racket/contract
                               -> any/c and/c or/c
                               listof contract? parameter/c
-                              real-in <=/c natural-number/c)
+                              real-in >/c <=/c natural-number/c)
                      (only-in racket/sequence sequence/c)
                      (only-in racket/class is-a?/c)
                      (only-in racket/draw
