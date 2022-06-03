@@ -290,7 +290,7 @@
   (define dc (new bitmap-dc% [bitmap bm]))
   (send dc set-pen black-pen)
   (send dc set-brush black-brush)
-  ; (send dc set-smoothing 'smoothed)
+  #;(send dc set-smoothing 'smoothed)
   (define w (* 1. width))
   (define h (* 1. height))
   ; Map unit square to screen coordinates - also flip y-axis
@@ -335,7 +335,7 @@
            ; transform frame coordinates into input coordinates of current transform
            (compose-transformation old-transformation transformation))
          (send dc set-initial-matrix (transformation->vector new-transformation))
-         ; (send dc transform (transformation->vector transformation))
+         #;(send dc transform (transformation->vector transformation))
          (begin0
            (begin body ...)
            (send dc set-initial-matrix old-vector))))]))
@@ -651,4 +651,4 @@
   (define square-limit (cycle corner))
   square-limit)
 
-;(echo (escher))
+#;(echo (escher))
