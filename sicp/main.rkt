@@ -11,9 +11,7 @@
 
 (define-syntax (define+provide stx)
   (syntax-case stx ()
-    [(_ (id . args) . body) #'(begin
-                                (provide id)
-                                (define (id . args) . body))]
+    [(_ (id . args) . body) #'(define+provide id (λ args . body))]
     [(_ id expr) #'(begin
                      (provide id)
                      (define id
