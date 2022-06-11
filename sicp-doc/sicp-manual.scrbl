@@ -14,6 +14,8 @@ to simply as SICP.
 
 The second @racket[sicp-pict] collection contains the picture language used in SICP.
 
+@local-table-of-contents[]
+
 @include-section["installation.scrbl"]
 @include-section["sicp.scrbl"]
 @include-section["sicp-pict.scrbl"]
@@ -21,4 +23,3 @@ The second @racket[sicp-pict] collection contains the picture language used in S
 @include-section["external-links.scrbl"]
 
 @index-section{}
-
