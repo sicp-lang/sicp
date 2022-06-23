@@ -275,10 +275,6 @@
     (painter (frame (vect 0. 0.) (vect 1. 0.) (vect 0. 1.)))
     (make-object image-snip% bm)))
 
-; For compatibility with old texts.
-(define paint-hi-res paint)
-(define paint-hires  paint)
-
 ; Painters assume the image as coordinates (0,0) in the
 ; lower left corner and (1,1) in the upper right corner.
 ; We therefore need to set the initial transformation matrix
@@ -388,8 +384,9 @@
          painter-procedure/c
          ;
          paint
-         paint-hi-res
-         paint-hires
+         ; For compatibility with old texts.
+         (rename-out [paint paint-hi-res])
+         (rename-out [paint paint-hires])
          ;
 
          (contract-out [number->painter (-> byte? painter/c)]

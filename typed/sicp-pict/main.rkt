@@ -14,12 +14,14 @@
                   with-pen
                   with-brush
                   echo))
+(provide with-transformation with-frame with-pen with-brush echo)
 
 (define-type Vect    vect)
 (define-type Frame   frame)
 (define-type Trans   trans)
 (define-type Segment segment)
 (define-type Painter (-> Frame Any))
+(provide Vect Frame Trans Segment Painter)
 
 (require/typed/provide "../../sicp-pict/main.rkt"
   ;;;
@@ -72,24 +74,12 @@
   ;;;
   ;;; Primitive Painters
   ;;;
-  [paint        (->* (Painter)
-                     (Any
-                      #:width  Positive-Integer
-                      #:height Positive-Integer
-                      #:backing-scale Positive-Real)
-                     (Instance Image-Snip%))]
-  [paint-hires  (->* (Painter)
-                     (Any
-                      #:width  Positive-Integer
-                      #:height Positive-Integer
-                      #:backing-scale Positive-Real)
-                     (Instance Image-Snip%))]
-  [paint-hi-res (->* (Painter)
-                     (Any
-                      #:width  Positive-Integer
-                      #:height Positive-Integer
-                      #:backing-scale Positive-Real)
-                     (Instance Image-Snip%))]
+  [paint (->* (Painter)
+              (Any
+               #:width  Positive-Integer
+               #:height Positive-Integer
+               #:backing-scale Positive-Real)
+              (Instance Image-Snip%))]
   [number->painter    (-> Byte Painter)]
   [color->painter     (-> (Instance Color%) Painter)]
   [segments->painter  (-> (Sequenceof Segment) Painter)]
@@ -125,6 +115,8 @@
   [mark-of-zorro    Painter]
   [einstein         Painter]
   [escher           (-> Painter)])
+(provide (rename-out [paint paint-hi-res])
+         (rename-out [paint paint-hires]))
 
 (unsafe-require/typed/provide "../../sicp-pict/main.rkt"
   [color-object? (pred (Instance Color%))]
@@ -139,7 +131,3 @@
   ; the program to be very slow in some cases.
   [current-bm (Parameter (Option (Instance Bitmap%)))]
   [current-dc (Parameter (Option (Instance Bitmap-DC%)))])
-
-
-(provide (all-from-out "../../sicp-pict/main.rkt")
-         (all-defined-out))
