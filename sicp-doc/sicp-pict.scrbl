@@ -19,8 +19,7 @@
 @(the-eval '(require sicp-pict))
 
 @title{SICP Picture Language}
-@defmodule[sicp-pict]
-@defmodule[typed/sicp-pict]
+@defmodule*[(sicp-pict typed/sicp-pict)]
 
 @index["painter"]
 @index["geometry"]
