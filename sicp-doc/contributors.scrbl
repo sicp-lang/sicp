@@ -23,6 +23,7 @@ The following individuals contributed to the implementation and documentation of
   @item{Huma Zafar updated the documentation to match the new picture language implementation.}
   @item{Pavan Maddamsetti implemented the missing @racket[random] function.}
   @item{Jiezhe Wang fixed the top-level printing so that mutable pairs are displayed similar to r5rs.}
+  @item{Noah Ma implemented typed/sicp-pict.}
   @item{Sorawee Porncharoenwase is a current maintainer of the package.}
   @item{Jens Axel Søgaard is a current maintainer of the package,
         implementing the picture language and maintaining the package for years.}
