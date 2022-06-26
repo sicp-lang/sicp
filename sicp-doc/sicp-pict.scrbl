@@ -252,27 +252,27 @@ the first vect to the endpoint of the second vect.
   This makes it easy to see the expression that was used to produce an image.
 }
 
-@defform[(with-transformation transformation body ...)]{
+@defform[(with-transformation transformation-expr body ...)]{
   Store the @racket[initial-matrix] of the drawing context given by @racket[current-dc].
 
-  Install @racket[transformation] as the @racket[initial-matrix].
+  Install @racket[transformation-expr] as the @racket[initial-matrix].
 
   Evaluate @racket[body ...].
 
   Restore the saved @racket[initial-matrix].
 }
 
-@defform[(with-frame frame body ...)]{
+@defform[(with-frame frame-expr body ...)]{
   Evaluate @racket[body ...] while the @racket[initial-matrix] of the drawing context @racket[current-dc]
-  is given by the transformation corresponding to @racket[frame].
+  is given by the transformation corresponding to @racket[frame-expr].
 }
 
-@defform[(with-pen pen body ...)]{
-  Evaluate @racket[body ...] while @racket[pen] is installed in the drawing context given by @racket[current-dc].
+@defform[(with-pen pen-expr body ...)]{
+  Evaluate @racket[body ...] while @racket[pen-expr] is installed in the drawing context given by @racket[current-dc].
 }
 
-@defform[(with-brush brush body ...)]{
-  Evaluate @racket[body ...] while @racket[brush] is installed in the drawing context given by @racket[current-dc].
+@defform[(with-brush brush-expr body ...)]{
+  Evaluate @racket[body ...] while @racket[brush-expr] is installed in the drawing context given by @racket[current-dc].
 }
 
 @section{Primitive Painters}
