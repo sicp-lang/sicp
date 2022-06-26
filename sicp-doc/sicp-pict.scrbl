@@ -30,9 +30,9 @@
 
 The SICP Picture Language is a small language for drawing pictures.
 It shows the power of data abstraction and closure. The picture language
-stems from Peter Henderson's 1982 paper "Functional Geometry" and was
-included by Hal Abelson in "Structure and Interpretation of Computer
-Programs".
+stems from Peter Henderson's 1982 paper ``Functional Geometry'' and was
+included by Hal Abelson in ``Structure and Interpretation of Computer
+Programs''.
 
 The basic concept of the picture language is a @emph{painter}, which draws
 its image (shifted and scaled) within a frame given by a parallelogram.
@@ -154,10 +154,10 @@ A @emph{frame} is descibed by three vectors.
 }
 
 @defproc[(frame-coord-map [f frame?]) (vect? . -> . vect?)]{
-  Each frame determines a system of "frame coordinates" (x,y) where
-  (0,0) is the origin of the frame, x represents the displacement
+  Each frame determines a system of ``frame coordinates'' @math{(x,y)} where
+  @math{(0,0)} is the origin of the frame, @math{x} represents the displacement
   along the first edge (as a fraction of the length of the edge) and
-  y is the displacement along the second edge.
+  @math{y} is the displacement along the second edge.
 
   The frame coordinate map is returned by @racket[frame-coord-map]. E.g.
   these expression return the same value:
@@ -419,7 +419,7 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
               @defthing[current-dc (parameter/c (or/c #f (is-a?/c bitmap-dc%)))])]{
   A painter needs to paint on something.
   We will use a parameter  @racket[current-dc]  to hold the drawing context
-  of "what is currently being drawn to".
+  of ``what is currently being drawn to''.
   In practice this will hold the drawing context (@racket[current-dc])
   for a bitmap (@racket[current-bm]).
 }
