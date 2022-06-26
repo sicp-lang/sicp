@@ -209,8 +209,8 @@ the first vect to the endpoint of the second vect.
   Defined as @racket[(is-a?/c brush%)].
 }
 
-@deftogether[(@defproc[(new-color [color (or/c real? string? color-object?)]) color-object?]
-              @defproc[(new-color [r real?] [g real?] [b real?] [a (real-in 0 1) 1.0]) color-object?])]{
+@defproc*[([(new-color [color (or/c real? string? color-object?)]) color-object?]
+           [(new-color [r real?] [g real?] [b real?] [a (real-in 0 1) 1.0]) color-object?])]{
   Create a color.
 }
 
