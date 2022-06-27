@@ -10,6 +10,7 @@
                      (only-in racket/sequence sequence/c)
                      (only-in racket/class is-a?/c)
                      (only-in racket/draw
+                              dc<%>
                               bitmap% bitmap-dc%
                               color% pen% brush%
                               make-bitmap)
@@ -253,26 +254,30 @@ the first vect to the endpoint of the second vect.
 }
 
 @defform[(with-transformation transformation-expr body ...)]{
-  Store the @racket[initial-matrix] of the drawing context given by @racket[current-dc].
+  @itemlist[
+    @item{Store the initial-matrix of the drawing context given by @racket[current-dc].}
+    @item{Install @racket[transformation-expr] as the initial-matrix.}
+    @item{Evaluate @racket[body ...].}
+    @item{Restore the saved initial-matrix.}
+  ]
 
-  Install @racket[transformation-expr] as the @racket[initial-matrix].
-
-  Evaluate @racket[body ...].
-
-  Restore the saved @racket[initial-matrix].
+  See also @method[dc<%> get-initial-matrix].
 }
 
 @defform[(with-frame frame-expr body ...)]{
-  Evaluate @racket[body ...] while the @racket[initial-matrix] of the drawing context @racket[current-dc]
-  is given by the transformation corresponding to @racket[frame-expr].
+  Evaluate @racket[body ...] while the initial-matrix of
+  the drawing context @racket[current-dc] is given by the transformation
+  corresponding to @racket[frame-expr].
 }
 
 @defform[(with-pen pen-expr body ...)]{
-  Evaluate @racket[body ...] while @racket[pen-expr] is installed in the drawing context given by @racket[current-dc].
+  Evaluate @racket[body ...] while @racket[pen-expr] is installed
+  in the drawing context given by @racket[current-dc].
 }
 
 @defform[(with-brush brush-expr body ...)]{
-  Evaluate @racket[body ...] while @racket[brush-expr] is installed in the drawing context given by @racket[current-dc].
+  Evaluate @racket[body ...] while @racket[brush-expr] is installed
+  in the drawing context given by @racket[current-dc].
 }
 
 @section{Primitive Painters}
