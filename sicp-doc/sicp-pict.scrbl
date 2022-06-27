@@ -19,7 +19,8 @@
 @(the-eval '(require sicp-pict))
 
 @title{SICP Picture Language}
-@defmodule*[(sicp-pict typed/sicp-pict)]
+@defmodule[sicp-pict]
+@defmodule[typed/sicp-pict]
 
 @index["painter"]
 @index["geometry"]
@@ -30,9 +31,9 @@
 
 The SICP Picture Language is a small language for drawing pictures.
 It shows the power of data abstraction and closure. The picture language
-stems from Peter Henderson's 1982 paper ``Functional Geometry'' and was
-included by Hal Abelson in ``Structure and Interpretation of Computer
-Programs''.
+stems from Peter Henderson's 1982 paper "Functional Geometry" and was
+included by Hal Abelson in "Structure and Interpretation of Computer
+Programs".
 
 The basic concept of the picture language is a @emph{painter}, which draws
 its image (shifted and scaled) within a frame given by a parallelogram.
@@ -154,10 +155,10 @@ A @emph{frame} is descibed by three vectors.
 }
 
 @defproc[(frame-coord-map [f frame?]) (vect? . -> . vect?)]{
-  Each frame determines a system of ``frame coordinates'' @math{(x,y)} where
-  @math{(0,0)} is the origin of the frame, @math{x} represents the displacement
+  Each frame determines a system of "frame coordinates" (x,y) where
+  (0,0) is the origin of the frame, x represents the displacement
   along the first edge (as a fraction of the length of the edge) and
-  @math{y} is the displacement along the second edge.
+  y is the displacement along the second edge.
 
   The frame coordinate map is returned by @racket[frame-coord-map]. E.g.
   these expression return the same value:
@@ -209,8 +210,8 @@ the first vect to the endpoint of the second vect.
   Defined as @racket[(is-a?/c brush%)].
 }
 
-@defproc*[([(new-color [color (or/c real? string? color-object?)]) color-object?]
-           [(new-color [r real?] [g real?] [b real?] [a (real-in 0 1) 1.0]) color-object?])]{
+@deftogether[(@defproc[(new-color [color (or/c real? string? color-object?)]) color-object?]
+              @defproc[(new-color [r real?] [g real?] [b real?] [a (real-in 0 1) 1.0]) color-object?])]{
   Create a color.
 }
 
@@ -252,27 +253,27 @@ the first vect to the endpoint of the second vect.
   This makes it easy to see the expression that was used to produce an image.
 }
 
-@defform[(with-transformation transformation-expr body ...)]{
+@defform[(with-transformation transformation body ...)]{
   Store the @racket[initial-matrix] of the drawing context given by @racket[current-dc].
 
-  Install @racket[transformation-expr] as the @racket[initial-matrix].
+  Install @racket[transformation] as the @racket[initial-matrix].
 
   Evaluate @racket[body ...].
 
   Restore the saved @racket[initial-matrix].
 }
 
-@defform[(with-frame frame-expr body ...)]{
+@defform[(with-frame frame body ...)]{
   Evaluate @racket[body ...] while the @racket[initial-matrix] of the drawing context @racket[current-dc]
-  is given by the transformation corresponding to @racket[frame-expr].
+  is given by the transformation corresponding to @racket[frame].
 }
 
-@defform[(with-pen pen-expr body ...)]{
-  Evaluate @racket[body ...] while @racket[pen-expr] is installed in the drawing context given by @racket[current-dc].
+@defform[(with-pen pen body ...)]{
+  Evaluate @racket[body ...] while @racket[pen] is installed in the drawing context given by @racket[current-dc].
 }
 
-@defform[(with-brush brush-expr body ...)]{
-  Evaluate @racket[body ...] while @racket[brush-expr] is installed in the drawing context given by @racket[current-dc].
+@defform[(with-brush brush body ...)]{
+  Evaluate @racket[body ...] while @racket[brush] is installed in the drawing context given by @racket[current-dc].
 }
 
 @section{Primitive Painters}
@@ -419,7 +420,7 @@ Painting turns a painter into an @emph{image snip} which can be displayed in DrR
               @defthing[current-dc (parameter/c (or/c #f (is-a?/c bitmap-dc%)))])]{
   A painter needs to paint on something.
   We will use a parameter  @racket[current-dc]  to hold the drawing context
-  of ``what is currently being drawn to''.
+  of "what is currently being drawn to".
   In practice this will hold the drawing context (@racket[current-dc])
   for a bitmap (@racket[current-bm]).
 }
