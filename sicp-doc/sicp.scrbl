@@ -3,7 +3,7 @@
 @(require scribble/manual scribble/eval
           (for-label (except-in sicp #%app #%datum #%top true false identity error)
                      (only-in racket require true false identity error
-                                     natural-number/c any/c)))
+                                     natural-number/c any/c any namespace?)))
 
 @title{SICP Language}
 @defmodule[sicp #:lang]
@@ -65,6 +65,14 @@ then use @racket[#%require].
 
 @defform[(amb expr ...)]{
   The amb operator.
+}
+
+@defproc[(apply-in-underlying-scheme [proc procedure?] [args list?]) any]{
+  An alias for @racket[(apply proc args)].
+}
+
+@defthing[user-initial-environment namespace?]{
+  The current namespace.
 }
 
 Additionally, @racket[true], @racket[false], @racket[identity], and @racket[error] are provided from Racket.
