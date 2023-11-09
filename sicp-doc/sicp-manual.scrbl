@@ -17,6 +17,11 @@ to simply as SICP.
 
 The second @racket[sicp-pict] collection contains the picture language used in SICP.
 
+@centered{
+ The wizard book
+ 
+ @image["SICP-cover.jpg"]
+}
 @include-section["installation.scrbl"]
 @include-section["sicp.scrbl"]
 @include-section["sicp-pict.scrbl"]
