@@ -5,7 +5,7 @@
 @title{External Links}
 
 @itemlist[
-  @item{@link["https://mitpress.mit.edu/sites/default/files/sicp/psets/ps4hnd/readme.html"]{readme.html}
+  @item{@link["https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/psets/ps4hnd/readme.html"]{readme.html}
         from the SICP website has a more detailed documentation and exercises.}
-  @item{Peter Henderson's @link["http://eprints.ecs.soton.ac.uk/7577/01/funcgeo2.pdf"]{Functional Geometry}.}
+  @item{Peter Henderson's @link["https://eprints.soton.ac.uk/257577/1/funcgeo2.pdf"]{Functional Geometry}.}
 ]

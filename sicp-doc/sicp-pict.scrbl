@@ -35,7 +35,7 @@ its image (shifted and scaled) within a frame given by a parallelogram.
 Painters can be combined to construct new painters.
 
 Before using this package, read
-@link["https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-15.html#%_sec_2.2.4"]{section 2.2.4 of SICP},
+@link["https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book-Z-H-15.html#%_sec_2.2.4"]{section 2.2.4 of SICP},
 which is an excellent introduction to the ideas of the picture language.
 This manual is meant as a reference guide.
 
